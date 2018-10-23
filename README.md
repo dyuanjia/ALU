@@ -1,8 +1,21 @@
-# Mojo Project
+# 16-bit ALU
 Team 2-7
 
+## TODO
+Modules:
+1. ADDER
+2. CMP
+3. BOOL
+4. SHIFTER
+5. ALU(combine everything)
+6. Tester(automatic as itself)
+
+For TOP:
+Add another FSM to change between Manual and Automatic testing
+
+
 ## FPGA Tester
-The finite state machine (FSM) has 3 states:
+The finite state machine (FSM) has ? states:
 1. Manual Testing  
     The 3 inputs are controlled by DIP switches 2, 1 and 0.
     * Carry-in: 2
