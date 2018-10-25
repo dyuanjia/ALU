@@ -16,9 +16,9 @@ module mojo_top (
     output io_sel [4],      // Digit select on IO Shield
     input io_button [5],    // 5 buttons on IO Shield
     input io_dip [3][8],    // DIP switches on IO Shield
-    input alufn[6],
-    input a[16],
-    input b[16]
+    input alufn [7],
+    input a [16],
+    input b [16]
   ) {
   
   sig rst;                  // reset signal
@@ -28,6 +28,9 @@ module mojo_top (
     // clock. This ensures the entire FPGA comes out of reset at the same time.
     reset_conditioner reset_cond;
     
+    .rst(rst) {
+      fsm modes = {MANUAL, AUTO};
+    }    
   }
   
   // Initialize alu
@@ -43,16 +46,23 @@ module mojo_top (
     alu16.a = a;
     alu16.b = b;
     
-    
-    // Testing area during development
-    alu16.alufn = io_dip[2][5:0];
-    alu16.a = 16b11;
-    alu16.b[15:8] = io_dip[1];
-    alu16.b[7:0] = io_dip[0];
-    io_led[0] = alu16.out[7:0];
-    io_led[1] = alu16.out[15:8];
-    
-    io_led[2] = 8h00;
+    io_led = 3x{{8h00}};
+    // Testing area during development 
+    case(modes.q) {
+      modes.MANUAL:
+        alu16.alufn = io_dip[2][6:0];
+        alu16.a = 16b11;
+        alu16.b[15:8] = io_dip[1];
+        alu16.b[7:0] = io_dip[0];
+        io_led[0] = alu16.out[7:0];
+        io_led[1] = alu16.out[15:8];
+        
+        io_led[2] = 8h00;
+        
+      modes.AUTO:
+        io_led[0] = alu16.out[7:0];
+        io_led[1] = alu16.out[15:8];
+    } 
     // Testing area ends here.    
     
     led = 8h00;             // turn LEDs off
