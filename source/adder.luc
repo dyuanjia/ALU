@@ -8,7 +8,7 @@ module adder (
     input alufn[7]   //alufn0 input to indicate subtract
   ) {
   
-  sig msbout[17];
+  sig msbout[16];
   sig xb[16];
 
   always {
@@ -17,8 +17,8 @@ module adder (
       msbout = $signed(a)+$signed(xb);
     }
     else{
-      xb = ^b;
-      msbout = $signed(a)+$signed(xb);
+      xb = ~b;
+      msbout = $signed(a)+$signed(xb) +1;
     }
     
     if (msbout == 0){
@@ -45,4 +45,3 @@ module adder (
     out = msbout[15:0];
   }
 }
-
