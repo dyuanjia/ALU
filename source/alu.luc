@@ -1,0 +1,19 @@
+module alu (
+    input alufn[6],  // ALU Function Input
+    input a[16],
+    input b[16],
+    output out[16]   // 16-bit output
+  ) {
+  
+  // Initialize ALU modules
+  shifter shifter16;
+
+  always {
+  
+    // Connect inputs and outputs of ALU to each module
+    shifter16.alufn = alufn;
+    shifter16.a = a;
+    shifter16.b = b;
+    out = shifter16.out;
+  }
+}
