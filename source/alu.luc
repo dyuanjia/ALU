@@ -1,5 +1,5 @@
 module alu (
-    input alufn[6],  // ALU Function Input
+    input alufn[7],  // ALU Function Input
     input a[16],
     input b[16],
     output out[16]   // 16-bit output
@@ -7,6 +7,7 @@ module alu (
   
   // Initialize ALU modules
   shifter shifter16;
+  multiply multiply16;
 
   always {
   
@@ -14,6 +15,19 @@ module alu (
     shifter16.alufn = alufn;
     shifter16.a = a;
     shifter16.b = b;
-    out = shifter16.out;
+    
+    multiply16.alufn = alufn;
+    multiply16.a = a;
+    multiply16.b = b;
+    
+    out = 16b0;        
+    
+    case(alufn[6:4]){
+      b010:
+        out = shifter16.out;
+        
+      b100:
+        out = multiply16.out;     
+    }
   }
 }

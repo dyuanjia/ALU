@@ -5,7 +5,7 @@
 */
 
 module alu_2 (
-    input [5:0] alufn,
+    input [6:0] alufn,
     input [15:0] a,
     input [15:0] b,
     output reg [15:0] out
@@ -14,7 +14,7 @@ module alu_2 (
   
   
   wire [16-1:0] M_shifter16_out;
-  reg [6-1:0] M_shifter16_alufn;
+  reg [7-1:0] M_shifter16_alufn;
   reg [16-1:0] M_shifter16_a;
   reg [16-1:0] M_shifter16_b;
   shifter_3 shifter16 (
@@ -24,10 +24,33 @@ module alu_2 (
     .out(M_shifter16_out)
   );
   
+  wire [16-1:0] M_multiply16_out;
+  reg [7-1:0] M_multiply16_alufn;
+  reg [16-1:0] M_multiply16_a;
+  reg [16-1:0] M_multiply16_b;
+  multiply_4 multiply16 (
+    .alufn(M_multiply16_alufn),
+    .a(M_multiply16_a),
+    .b(M_multiply16_b),
+    .out(M_multiply16_out)
+  );
+  
   always @* begin
     M_shifter16_alufn = alufn;
     M_shifter16_a = a;
     M_shifter16_b = b;
-    out = M_shifter16_out;
+    M_multiply16_alufn = alufn;
+    M_multiply16_a = a;
+    M_multiply16_b = b;
+    out = 16'h0000;
+    
+    case (alufn[4+2-:3])
+      3'h2: begin
+        out = M_shifter16_out;
+      end
+      3'h4: begin
+        out = M_multiply16_out;
+      end
+    endcase
   end
 endmodule

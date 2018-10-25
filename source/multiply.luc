@@ -1,0 +1,11 @@
+module multiply (
+    input alufn[7],  // ALU Function Input
+    input a[16],
+    input b[16],
+    output out[16]   // 16-bit output
+  ) {
+
+  always {
+    out = a * b;
+  }
+}

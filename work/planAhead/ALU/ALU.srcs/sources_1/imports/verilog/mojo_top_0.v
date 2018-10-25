@@ -22,7 +22,7 @@ module mojo_top_0 (
     output reg [3:0] io_sel,
     input [4:0] io_button,
     input [23:0] io_dip,
-    input [5:0] alufn,
+    input [6:0] alufn,
     input [15:0] a,
     input [15:0] b
   );
@@ -38,9 +38,13 @@ module mojo_top_0 (
     .in(M_reset_cond_in),
     .out(M_reset_cond_out)
   );
+  localparam MANUAL_modes = 1'd0;
+  localparam AUTO_modes = 1'd1;
+  
+  reg M_modes_d, M_modes_q = MANUAL_modes;
   
   wire [16-1:0] M_alu16_out;
-  reg [6-1:0] M_alu16_alufn;
+  reg [7-1:0] M_alu16_alufn;
   reg [16-1:0] M_alu16_a;
   reg [16-1:0] M_alu16_b;
   alu_2 alu16 (
@@ -56,13 +60,23 @@ module mojo_top_0 (
     M_alu16_alufn = alufn;
     M_alu16_a = a;
     M_alu16_b = b;
-    M_alu16_alufn = io_dip[16+0+5-:6];
-    M_alu16_a = 16'h0003;
-    M_alu16_b[8+7-:8] = io_dip[8+7-:8];
-    M_alu16_b[0+7-:8] = io_dip[0+7-:8];
-    io_led[0+7-:8] = M_alu16_out[0+7-:8];
-    io_led[8+7-:8] = M_alu16_out[8+7-:8];
-    io_led[16+7-:8] = 8'h00;
+    io_led = 24'h000000;
+    
+    case (M_modes_q)
+      MANUAL_modes: begin
+        M_alu16_alufn = io_dip[16+0+6-:7];
+        M_alu16_a = 16'h0003;
+        M_alu16_b[8+7-:8] = io_dip[8+7-:8];
+        M_alu16_b[0+7-:8] = io_dip[0+7-:8];
+        io_led[0+7-:8] = M_alu16_out[0+7-:8];
+        io_led[8+7-:8] = M_alu16_out[8+7-:8];
+        io_led[16+7-:8] = 8'h00;
+      end
+      AUTO_modes: begin
+        io_led[0+7-:8] = M_alu16_out[0+7-:8];
+        io_led[8+7-:8] = M_alu16_out[8+7-:8];
+      end
+    endcase
     led = 8'h00;
     spi_miso = 1'bz;
     spi_channel = 4'bzzzz;
@@ -70,4 +84,13 @@ module mojo_top_0 (
     io_seg = 8'hff;
     io_sel = 4'hf;
   end
+  
+  always @(posedge clk) begin
+    if (rst == 1'b1) begin
+      M_modes_q <= 1'h0;
+    end else begin
+      M_modes_q <= M_modes_d;
+    end
+  end
+  
 endmodule
