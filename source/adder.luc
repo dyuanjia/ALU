@@ -1,10 +1,48 @@
 module adder (
-    input clk,  // clock
-    input rst,  // reset
-    output out
+    input a [16],    // 16bit input
+    input b [16],    // 16bit input
+    output out [16], // 16 bit output
+    output z,
+    output v,
+    output n,
+    input alufn[7]   //alufn0 input to indicate subtract
   ) {
+  
+  sig msbout[17];
+  sig xb[16];
 
   always {
-    out = 0;
+    if (alufn[0]==0){
+      xb = $signed(b);
+      msbout = $signed(a)+$signed(xb);
+    }
+    else{
+      xb = ^b;
+      msbout = $signed(a)+$signed(xb);
+    }
+    
+    if (msbout == 0){
+        z = 1;
+    }
+    else{
+      z = 0;
+    }
+    
+    if (msbout[15] == 1){
+      n=1;
+    }
+    else{
+      n=0;
+    }
+    
+    if ((msbout[15]==1 && a[15]==0 && xb[15]==0) || (msbout[15]==0 && a[15] == 1 && xb[15]==1)){
+      v=1;
+    }
+    else{
+      v=0;
+    }
+    
+    out = msbout[15:0];
   }
 }
+

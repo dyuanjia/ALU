@@ -4,8 +4,7 @@
    This is a temporary file and any changes made to it will be destroyed.
 */
 
-module multiply_4 (
-    input [6:0] alufn,
+module divide_6 (
     input [15:0] a,
     input [15:0] b,
     output reg [15:0] out
@@ -14,6 +13,6 @@ module multiply_4 (
   
   
   always @* begin
-    out = a * b;
+    out = a / b;
   end
 endmodule

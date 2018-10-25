@@ -4,6 +4,7 @@
     <src>multiply.luc</src>
     <src>alu.luc</src>
     <src>shifter.luc</src>
+    <src>divide.luc</src>
     <src>adder.luc</src>
     <src top="true">mojo_top.luc</src>
     <ucf lib="true">io_shield.ucf</ucf>
