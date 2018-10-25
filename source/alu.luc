@@ -13,6 +13,7 @@ module alu (
   shifter shifter16;
   multiply multiply16;
   divide divide16;
+  boolean boolean16;
 
   always {
   
@@ -34,6 +35,10 @@ module alu (
     divide16.a = a;
     divide16.b = b;
     
+    boolean16.alufn = alufn;
+    boolean16.a = a;
+    boolean16.b = b;
+    
     out = 16b0;        
     
     case(alufn[6:4]){
@@ -47,7 +52,10 @@ module alu (
         out = multiply16.out;   
           
       b101:
-        out = divide16.out;    
+        out = divide16.out;
+      
+      b001:
+        out = boolean16.out;    
     }
   }
 }
