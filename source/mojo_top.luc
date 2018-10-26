@@ -62,6 +62,9 @@ module mojo_top (
         io_led[2][1] = alu16.v;
         io_led[2][0] = alu16.n;
         
+        if (io_button[1])         // when the center button is pressed
+          modes.d = modes.AUTO;   // switch to automatic testing
+        
       modes.AUTO:
         io_led[0] = alu16.out[7:0];
         io_led[1] = alu16.out[15:8];
