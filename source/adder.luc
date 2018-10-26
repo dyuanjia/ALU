@@ -18,7 +18,7 @@ module adder (
     }
     else{
       xb = ~b;
-      msbout = $signed(a)+$signed(xb) +1;
+      msbout = $signed(a)+$signed(xb) + 1;
     }
     
     if (msbout == 0){

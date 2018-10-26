@@ -16,7 +16,7 @@ module adder_3 (
   
   
   
-  reg [16:0] msbout;
+  reg [15:0] msbout;
   
   reg [15:0] xb;
   
@@ -25,8 +25,8 @@ module adder_3 (
       xb = $signed(b);
       msbout = $signed(a) + $signed(xb);
     end else begin
-      xb = (^b);
-      msbout = $signed(a) + $signed(xb);
+      xb = ~b;
+      msbout = $signed(a) + $signed(xb) + 1'h1;
     end
     if (msbout == 1'h0) begin
       z = 1'h1;
