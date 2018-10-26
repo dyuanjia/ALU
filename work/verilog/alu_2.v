@@ -33,11 +33,33 @@ module alu_2 (
     .n(M_adder16_n)
   );
   
+  wire [16-1:0] M_compare16_out;
+  reg [7-1:0] M_compare16_alufn;
+  reg [16-1:0] M_compare16_a;
+  reg [16-1:0] M_compare16_b;
+  compare_4 compare16 (
+    .alufn(M_compare16_alufn),
+    .a(M_compare16_a),
+    .b(M_compare16_b),
+    .out(M_compare16_out)
+  );
+  
+  wire [16-1:0] M_boolean16_out;
+  reg [16-1:0] M_boolean16_a;
+  reg [16-1:0] M_boolean16_b;
+  reg [7-1:0] M_boolean16_alufn;
+  boolean_5 boolean16 (
+    .a(M_boolean16_a),
+    .b(M_boolean16_b),
+    .alufn(M_boolean16_alufn),
+    .out(M_boolean16_out)
+  );
+  
   wire [16-1:0] M_shifter16_out;
   reg [7-1:0] M_shifter16_alufn;
   reg [16-1:0] M_shifter16_a;
   reg [16-1:0] M_shifter16_b;
-  shifter_4 shifter16 (
+  shifter_6 shifter16 (
     .alufn(M_shifter16_alufn),
     .a(M_shifter16_a),
     .b(M_shifter16_b),
@@ -47,7 +69,7 @@ module alu_2 (
   wire [16-1:0] M_multiply16_out;
   reg [16-1:0] M_multiply16_a;
   reg [16-1:0] M_multiply16_b;
-  multiply_5 multiply16 (
+  multiply_7 multiply16 (
     .a(M_multiply16_a),
     .b(M_multiply16_b),
     .out(M_multiply16_out)
@@ -56,7 +78,7 @@ module alu_2 (
   wire [16-1:0] M_divide16_out;
   reg [16-1:0] M_divide16_a;
   reg [16-1:0] M_divide16_b;
-  divide_6 divide16 (
+  divide_8 divide16 (
     .a(M_divide16_a),
     .b(M_divide16_b),
     .out(M_divide16_out)
@@ -69,6 +91,12 @@ module alu_2 (
     z = M_adder16_z;
     v = M_adder16_v;
     n = M_adder16_n;
+    M_compare16_alufn = alufn;
+    M_compare16_a = a;
+    M_compare16_b = b;
+    M_boolean16_alufn = alufn;
+    M_boolean16_a = a;
+    M_boolean16_b = b;
     M_shifter16_alufn = alufn;
     M_shifter16_a = a;
     M_shifter16_b = b;
@@ -82,13 +110,19 @@ module alu_2 (
       3'h0: begin
         out = M_adder16_out;
       end
+      3'h1: begin
+        out = M_boolean16_out;
+      end
       3'h2: begin
         out = M_shifter16_out;
+      end
+      3'h3: begin
+        out = M_compare16_out;
       end
       3'h4: begin
         out = M_multiply16_out;
       end
-      3'h5: begin
+      3'h2: begin
         out = M_divide16_out;
       end
     endcase

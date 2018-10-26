@@ -4,8 +4,9 @@
     <src>multiply.luc</src>
     <src>boolean.luc</src>
     <src>alu.luc</src>
-    <src>divide.luc</src>
     <src>shifter.luc</src>
+    <src>divide.luc</src>
+    <src>compare.luc</src>
     <src>adder.luc</src>
     <src top="true">mojo_top.luc</src>
     <ucf lib="true">io_shield.ucf</ucf>
