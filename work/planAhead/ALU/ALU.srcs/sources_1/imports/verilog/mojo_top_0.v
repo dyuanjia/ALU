@@ -71,7 +71,7 @@ module mojo_top_0 (
     case (M_modes_q)
       MANUAL_modes: begin
         M_alu16_alufn = io_dip[16+0+6-:7];
-        M_alu16_a = 16'h0003;
+        M_alu16_a = 16'h0180;
         M_alu16_b[8+7-:8] = io_dip[8+7-:8];
         M_alu16_b[0+7-:8] = io_dip[0+7-:8];
         io_led[0+7-:8] = M_alu16_out[0+7-:8];

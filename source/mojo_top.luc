@@ -51,7 +51,7 @@ module mojo_top (
     case(modes.q) {
       modes.MANUAL:
         alu16.alufn = io_dip[2][6:0];
-        alu16.a = 16b11;
+        alu16.a = 16b110000000;
         alu16.b[15:8] = io_dip[1];
         alu16.b[7:0] = io_dip[0];
         io_led[0] = alu16.out[7:0];
@@ -61,6 +61,7 @@ module mojo_top (
         io_led[2][2] = alu16.z;
         io_led[2][1] = alu16.v;
         io_led[2][0] = alu16.n;
+        
         
       modes.AUTO:
         io_led[0] = alu16.out[7:0];
