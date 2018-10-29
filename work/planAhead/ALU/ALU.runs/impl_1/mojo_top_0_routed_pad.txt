@@ -1,7 +1,7 @@
 Release 14.7 - par P.20131013 (nt)
 Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 
-Tue Oct 30 03:47:17 2018
+Tue Oct 30 04:10:55 2018
 
 
 INFO: The IO information is provided in three file formats as part of the Place and Route (PAR) process.  These formats are:
@@ -78,17 +78,17 @@ Pinout by Pin Number:
 |P56       |clk         |IOB      |IO_L30P_GCLK1_D13_2       |INPUT    |LVTTL      |2             |          |         |           |NONE     |         |LOCATED   |NO         |NONE            |
 |P57       |io_dip(23)  |IOB      |IO_L14N_D12_2             |INPUT    |LVTTL      |2             |          |         |PULLDOWN   |NONE     |         |LOCATED   |NO         |NONE            |
 |P58       |io_dip(22)  |IOB      |IO_L14P_D11_2             |INPUT    |LVTTL      |2             |          |         |PULLDOWN   |NONE     |         |LOCATED   |NO         |NONE            |
-|P59       |            |IOBS     |IO_L13N_D10_2             |UNUSED   |           |2             |          |         |           |         |         |          |           |                |
-|P60       |            |IOBM     |IO_L13P_M1_2              |UNUSED   |           |2             |          |         |           |         |         |          |           |                |
+|P59       |alufn[6]    |IOB      |IO_L13N_D10_2             |INPUT    |LVCMOS25*  |2             |          |         |           |NONE     |         |UNLOCATED |NO         |NONE            |
+|P60       |alufn[5]    |IOB      |IO_L13P_M1_2              |INPUT    |LVCMOS25*  |2             |          |         |           |NONE     |         |UNLOCATED |NO         |NONE            |
 |P61       |alufn[2]    |IOB      |IO_L12N_D2_MISO3_2        |INPUT    |LVCMOS25*  |2             |          |         |           |NONE     |         |UNLOCATED |NO         |NONE            |
-|P62       |            |IOBM     |IO_L12P_D1_MISO2_2        |UNUSED   |           |2             |          |         |           |         |         |          |           |                |
+|P62       |alufn[3]    |IOB      |IO_L12P_D1_MISO2_2        |INPUT    |LVCMOS25*  |2             |          |         |           |NONE     |         |UNLOCATED |NO         |NONE            |
 |P63       |            |         |VCCO_2                    |         |           |2             |          |         |           |         |any******|          |           |                |
-|P64       |            |IOBS     |IO_L3N_MOSI_CSI_B_MISO0_2 |UNUSED   |           |2             |          |         |           |         |         |          |           |                |
-|P65       |            |IOBM     |IO_L3P_D0_DIN_MISO_MISO1_2|UNUSED   |           |2             |          |         |           |         |         |          |           |                |
+|P64       |alufn[4]    |IOB      |IO_L3N_MOSI_CSI_B_MISO0_2 |INPUT    |LVCMOS25*  |2             |          |         |           |NONE     |         |UNLOCATED |NO         |NONE            |
+|P65       |alufn[1]    |IOB      |IO_L3P_D0_DIN_MISO_MISO1_2|INPUT    |LVCMOS25*  |2             |          |         |           |NONE     |         |UNLOCATED |NO         |NONE            |
 |P66       |io_dip(21)  |IOB      |IO_L2N_CMPMOSI_2          |INPUT    |LVTTL      |2             |          |         |PULLDOWN   |NONE     |         |LOCATED   |NO         |NONE            |
 |P67       |io_dip(20)  |IOB      |IO_L2P_CMPCLK_2           |INPUT    |LVTTL      |2             |          |         |PULLDOWN   |NONE     |         |LOCATED   |NO         |NONE            |
 |P68       |            |         |GND                       |         |           |              |          |         |           |         |         |          |           |                |
-|P69       |alufn[1]    |IOB      |IO_L1N_M0_CMPMISO_2       |INPUT    |LVCMOS25*  |2             |          |         |           |NONE     |         |UNLOCATED |NO         |NONE            |
+|P69       |alufn[0]    |IOB      |IO_L1N_M0_CMPMISO_2       |INPUT    |LVCMOS25*  |2             |          |         |           |NONE     |         |UNLOCATED |NO         |NONE            |
 |P70       |cclk        |IOB      |IO_L1P_CCLK_2             |INPUT    |LVTTL      |2             |          |         |           |NONE     |         |LOCATED   |NO         |NONE            |
 |P71       |            |         |DONE_2                    |         |           |              |          |         |           |         |         |          |           |                |
 |P72       |            |         |CMPCS_B_2                 |         |           |              |          |         |           |         |         |          |           |                |

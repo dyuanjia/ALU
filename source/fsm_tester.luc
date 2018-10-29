@@ -15,6 +15,7 @@ module fsm_tester (
   sig inputb[16];
   sig aluout[16];
   sig alufntest[7];
+  sig v;
   
   .clk(clk) {
     .rst(rst) {
@@ -41,34 +42,56 @@ module fsm_tester (
     
     module_change.d = module_change.q + 1;
     case_change.d = case_change.q + 1;
+    
+    v = alu16.v;
         
     case (test_modules.q) {
       test_modules.START:     //Initialize
         module_change.d = 1;
         case_change.d = 1;
-        test_modules.d=test_modules.AND;
+        test_modules.d=test_modules.ADD;
       test_modules.ADD:     // testing adder module
-        alu16.alufn[0]=0;
+        alu16.alufn=7b0;
+        if(module_change.q[27]==0){
+          inputa=16b11;
+          alu16.a = inputa;
+          inputb=16b11000;
+          alu16.b= inputb;
+          out[7:0]= alu16.out[7:0];
+          out[15:8] = alu16.out[15:8];
+        } else if(module_change.q[27]==1){
+          inputa=16b0111111111111111;
+          alu16.a = inputa;
+          inputb=16b1;
+          alu16.b= inputb;
+          out[7:0]= alu16.out[7:0];
+          out[15:8] = alu16.out[15:8];
+        }
         
-        inputa=16b11;
-        //io_led[0] = inputa[7:0];
-        alu16.a = inputa;
-        inputb=16b11000;
-        alu16.b= inputb;
-        io_led[0] = alu16.out[7:0];
-        io_led[1] = alu16.out[15:8];
-        if(alu16.out==inputa+inputb){
+        //if(v==1){
+        //error
+        //}
+        if(module_change.q==0){
             test_modules.d = test_modules.SUB;
         }
       test_modules.SUB:
-        alu16.alufn[0]=1;
-        inputa=16b11011;
-        alu16.a = inputa;
-        inputb=16b11;
-        alu16.b= inputb;
-        io_led[0] = alu16.out[7:0];
-        io_led[1] = alu16.out[15:8];
-        if(alu16.out==inputa+inputb){
+        alu16.alufn=7b1;
+        if(module_change.q[27]==0){
+          inputa=16b11011;
+          alu16.a = inputa;
+          inputb=16b11;
+          alu16.b= inputb;
+          out[7:0]= alu16.out[7:0];
+          out[15:8] = alu16.out[15:8];
+        } else if(module_change.q[27]==1){
+          inputa=16b1000000000000000;
+          alu16.a = inputa;
+          inputb=16b1;
+          alu16.b= inputb;
+          out[7:0]= alu16.out[7:0];
+          out[15:8] = alu16.out[15:8];
+        }
+        if(module_change.q==0){
             test_modules.d = test_modules.AND;
         }
         // A is 0000111100001111, B is 0000000011111111. One 4 bit in the 16 bit represents one test case in the truth table for bool func

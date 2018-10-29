@@ -26,6 +26,8 @@ module fsm_tester_2 (
   
   reg [6:0] alufntest;
   
+  reg v;
+  
   localparam START_test_modules = 5'd0;
   localparam ADD_test_modules = 5'd1;
   localparam SUB_test_modules = 5'd2;
@@ -83,34 +85,57 @@ module fsm_tester_2 (
     out = 16'h0000;
     M_module_change_d = M_module_change_q + 1'h1;
     M_case_change_d = M_case_change_q + 1'h1;
+    v = M_alu16_v;
     
     case (M_test_modules_q)
       START_test_modules: begin
         M_module_change_d = 1'h1;
         M_case_change_d = 1'h1;
-        M_test_modules_d = AND_test_modules;
+        M_test_modules_d = ADD_test_modules;
       end
       ADD_test_modules: begin
-        M_alu16_alufn[0+0-:1] = 1'h0;
-        inputa = 16'h0003;
-        M_alu16_a = inputa;
-        inputb = 16'h0018;
-        M_alu16_b = inputb;
-        io_led[0+7-:8] = M_alu16_out[0+7-:8];
-        io_led[8+7-:8] = M_alu16_out[8+7-:8];
-        if (M_alu16_out == inputa + inputb) begin
+        M_alu16_alufn = 7'h00;
+        if (M_module_change_q[27+0-:1] == 1'h0) begin
+          inputa = 16'h0003;
+          M_alu16_a = inputa;
+          inputb = 16'h0018;
+          M_alu16_b = inputb;
+          out[0+7-:8] = M_alu16_out[0+7-:8];
+          out[8+7-:8] = M_alu16_out[8+7-:8];
+        end else begin
+          if (M_module_change_q[27+0-:1] == 1'h1) begin
+            inputa = 16'h7fff;
+            M_alu16_a = inputa;
+            inputb = 16'h0001;
+            M_alu16_b = inputb;
+            out[0+7-:8] = M_alu16_out[0+7-:8];
+            out[8+7-:8] = M_alu16_out[8+7-:8];
+          end
+        end
+        if (M_module_change_q == 1'h0) begin
           M_test_modules_d = SUB_test_modules;
         end
       end
       SUB_test_modules: begin
-        M_alu16_alufn[0+0-:1] = 1'h1;
-        inputa = 16'h001b;
-        M_alu16_a = inputa;
-        inputb = 16'h0003;
-        M_alu16_b = inputb;
-        io_led[0+7-:8] = M_alu16_out[0+7-:8];
-        io_led[8+7-:8] = M_alu16_out[8+7-:8];
-        if (M_alu16_out == inputa + inputb) begin
+        M_alu16_alufn = 7'h01;
+        if (M_module_change_q[27+0-:1] == 1'h0) begin
+          inputa = 16'h001b;
+          M_alu16_a = inputa;
+          inputb = 16'h0003;
+          M_alu16_b = inputb;
+          out[0+7-:8] = M_alu16_out[0+7-:8];
+          out[8+7-:8] = M_alu16_out[8+7-:8];
+        end else begin
+          if (M_module_change_q[27+0-:1] == 1'h1) begin
+            inputa = 16'h8000;
+            M_alu16_a = inputa;
+            inputb = 16'h0001;
+            M_alu16_b = inputb;
+            out[0+7-:8] = M_alu16_out[0+7-:8];
+            out[8+7-:8] = M_alu16_out[8+7-:8];
+          end
+        end
+        if (M_module_change_q == 1'h0) begin
           M_test_modules_d = AND_test_modules;
         end
       end
