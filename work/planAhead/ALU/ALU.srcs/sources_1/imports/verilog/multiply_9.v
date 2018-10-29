@@ -4,7 +4,7 @@
    This is a temporary file and any changes made to it will be destroyed.
 */
 
-module divide_8 (
+module multiply_9 (
     input [15:0] a,
     input [15:0] b,
     output reg [15:0] out
@@ -13,6 +13,6 @@ module divide_8 (
   
   
   always @* begin
-    out = a / b;
+    out = a * b;
   end
 endmodule

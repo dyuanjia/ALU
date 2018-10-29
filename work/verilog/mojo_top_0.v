@@ -24,23 +24,7 @@ module mojo_top_0 (
     input [23:0] io_dip,
     input [6:0] alufn,
     input [15:0] a,
-    input [15:0] b,
-    input a0,
-    input a1,
-    input a2,
-    input a3,
-    input a4,
-    input a5,
-    input a6,
-    input a7,
-    input a8,
-    input a9,
-    input a10,
-    input a11,
-    input a12,
-    input a13,
-    input a14,
-    input a15
+    input [15:0] b
   );
   
   
@@ -54,10 +38,24 @@ module mojo_top_0 (
     .in(M_reset_cond_in),
     .out(M_reset_cond_out)
   );
-  localparam MANUAL_modes = 1'd0;
-  localparam AUTO_modes = 1'd1;
+  localparam AUTO_modes = 1'd0;
+  localparam MANUAL_modes = 1'd1;
   
-  reg M_modes_d, M_modes_q = MANUAL_modes;
+  reg M_modes_d, M_modes_q = AUTO_modes;
+  wire [24-1:0] M_tester_io_led;
+  wire [16-1:0] M_tester_out;
+  reg [7-1:0] M_tester_alufn;
+  reg [16-1:0] M_tester_a;
+  reg [16-1:0] M_tester_b;
+  fsm_tester_2 tester (
+    .clk(clk),
+    .rst(rst),
+    .alufn(M_tester_alufn),
+    .a(M_tester_a),
+    .b(M_tester_b),
+    .io_led(M_tester_io_led),
+    .out(M_tester_out)
+  );
   
   wire [16-1:0] M_alu16_out;
   wire [1-1:0] M_alu16_z;
@@ -66,7 +64,7 @@ module mojo_top_0 (
   reg [7-1:0] M_alu16_alufn;
   reg [16-1:0] M_alu16_a;
   reg [16-1:0] M_alu16_b;
-  alu_2 alu16 (
+  alu_3 alu16 (
     .alufn(M_alu16_alufn),
     .a(M_alu16_a),
     .b(M_alu16_b),
@@ -79,6 +77,9 @@ module mojo_top_0 (
   always @* begin
     M_reset_cond_in = ~rst_n;
     rst = M_reset_cond_out;
+    M_tester_alufn = alufn;
+    M_tester_a = a;
+    M_tester_b = b;
     M_alu16_alufn = alufn;
     M_alu16_a = a;
     M_alu16_b = b;
@@ -87,6 +88,7 @@ module mojo_top_0 (
     case (M_modes_q)
       MANUAL_modes: begin
         M_alu16_alufn = io_dip[16+0+6-:7];
+        M_alu16_a = 16'h0003;
         M_alu16_b[8+7-:8] = io_dip[8+7-:8];
         M_alu16_b[0+7-:8] = io_dip[0+7-:8];
         io_led[0+7-:8] = M_alu16_out[0+7-:8];
@@ -95,26 +97,10 @@ module mojo_top_0 (
         io_led[16+2+0-:1] = M_alu16_z;
         io_led[16+1+0-:1] = M_alu16_v;
         io_led[16+0+0-:1] = M_alu16_n;
-        M_alu16_a[0+0-:1] = a0;
-        M_alu16_a[1+0-:1] = a1;
-        M_alu16_a[2+0-:1] = a2;
-        M_alu16_a[3+0-:1] = a3;
-        M_alu16_a[4+0-:1] = a4;
-        M_alu16_a[5+0-:1] = a5;
-        M_alu16_a[6+0-:1] = a6;
-        M_alu16_a[7+0-:1] = a7;
-        M_alu16_a[8+0-:1] = a8;
-        M_alu16_a[9+0-:1] = a9;
-        M_alu16_a[10+0-:1] = a10;
-        M_alu16_a[11+0-:1] = a11;
-        M_alu16_a[12+0-:1] = a12;
-        M_alu16_a[13+0-:1] = a13;
-        M_alu16_a[14+0-:1] = a14;
-        M_alu16_a[15+0-:1] = a15;
       end
       AUTO_modes: begin
-        io_led[0+7-:8] = M_alu16_out[0+7-:8];
-        io_led[8+7-:8] = M_alu16_out[8+7-:8];
+        io_led[0+7-:8] = M_tester_out[0+7-:8];
+        io_led[8+7-:8] = M_tester_out[8+7-:8];
       end
     endcase
     led = 8'h00;

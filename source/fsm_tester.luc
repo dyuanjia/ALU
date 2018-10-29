@@ -2,10 +2,8 @@ module fsm_tester (
     input clk,  // clock
     input rst,  // reset
     output io_led [3][8],   // LEDs on IO Shield
-    output io_seg [8],      // 7-segment LEDs on IO Shield
-    output io_sel [4],      // Digit select on IO Shield
-    input io_button [5],    // 5 buttons on IO Shield
-    input io_dip [3][8],    // DIP switches on IO Shield
+    //output io_seg [8],      // 7-segment LEDs on IO Shield
+    //output io_sel [4],      // Digit select on IO Shield
     input alufn[7],
     input a [16],
     input b [16],
@@ -20,10 +18,10 @@ module fsm_tester (
   
   .clk(clk) {
     .rst(rst) {
-      fsm test_modules = {ADD, SUB, MUL, AND, OR, XOR, A, B, SHL, SHR, SRA, CMPEQ, CMPLT, CMPLE, MUL, DIVIDE, DONE}; // instance of a finite state machine
-      dff ctr[3+DIV];                     // use a flip flop as a counter for different inputs
-      dff buffer[DIV];                    // buffer between change in input and error checking
-      display seg;                        // instance used to display error message
+      fsm test_modules = {START, ADD, SUB, AND,NAND, OR,NOR, XOR,XNOR, A, B, SHL, SHR, SRA, CMPEQ, CMPLT, CMPLE, MUL, DIVIDE, DONE}; // instance of a finite state machine
+      dff module_change[2+DIV];                     // use a flip flop as a counter for different inputs
+      dff case_change[DIV];                    // buffer between change in input and error checking
+      //display seg;                        // instance used to display error message
     }
   }
   
@@ -31,21 +29,27 @@ module fsm_tester (
   
   always {
     io_led = 3x{{8h00}};     // turn LEDs off
-    io_seg = ~seg.seg;       // connect segments to the driver
-    io_sel = ~seg.sel;       // connect select to the driver
+    //io_seg = ~seg.seg;       // connect segments to the driver
+    //io_sel = ~seg.sel;       // connect select to the driver
     // increment buffer counter
     alu16.alufn = alufn;
     alu16.a = 16b0;
     alu16.b = 16b0;
     // initialize variables
-    seg.chars = {4h0, 4h0, 4h0, 4h0};
+    //seg.chars = {4h0, 4h0, 4h0, 4h0};
     out = 16b0;
-
+    
+    module_change.d = module_change.q + 1;
+    case_change.d = case_change.q + 1;
         
     case (test_modules.q) {
+      test_modules.START:     //Initialize
+        module_change.d = 1;
+        case_change.d = 1;
+        test_modules.d=test_modules.AND;
       test_modules.ADD:     // testing adder module
         alu16.alufn[0]=0;
-
+        
         inputa=16b11;
         //io_led[0] = inputa[7:0];
         alu16.a = inputa;
@@ -67,42 +71,106 @@ module fsm_tester (
         if(alu16.out==inputa+inputb){
             test_modules.d = test_modules.AND;
         }
+        // A is 0000111100001111, B is 0000000011111111. One 4 bit in the 16 bit represents one test case in the truth table for bool func
+      //Yet to add else for error handling
       test_modules.AND:
-      //alufn[3:0] == 4b1000 to activate AND
-        alu16.alufn[3:0]=4b1000;
-        inputa=16b1010101010101010;
+      //alufn == 7b0011000 to activate AND
+        alu16.alufn=7b0011000;
+        inputa=16b0000111100001111;
         alu16.a = inputa;
-        inputb=16b1010101010101010;
+        inputb=16b0000000011111111;
         alu16.b= inputb;
-        io_led[0] = alu16.out[7:0];
-        io_led[1] = alu16.out[15:8];
-        if(alu16.out==(inputa & inputb)){
+        out[7:0]= alu16.out[7:0];
+        out[15:8] = alu16.out[15:8];
+        if(module_change.q==0){
             test_modules.d = test_modules.OR;
         }
       test_modules.OR:
-        //alufn[3:0] == 4b1110 to activate OR
-        alu16.alufn[3:0]=4b1110;
-        inputa=16b1010101010101010;
+        //alufn[3:0] == 7b0011110 to activate OR
+        alu16.alufn=7b0011110;
+        inputa=16b0000111100001111;
         alu16.a = inputa;
-        inputb=16b1010101010101010;
+        inputb=16b0000000011111111;
         alu16.b= inputb;
-        io_led[0] = alu16.out[7:0];
-        io_led[1] = alu16.out[15:8];
-        if(alu16.out==(inputa & inputb)){
-            test_modules.d = test_modules.XOR;
+        out[7:0] = alu16.out[7:0];
+        out[15:8] = alu16.out[15:8];
+        if(module_change.q==0){
+          test_modules.d = test_modules.XOR;
         }
+        
       test_modules.XOR:
-        //alufn[3:0] == 4b0110 to activate XOR
-        alu16.alufn[3:0]=4b0110;
-        inputa=16b1010101010101010;
+        //alufn[3:0] == 7b0010110 to activate XOR
+        alu16.alufn=7b0010110;
+        inputa=16b0000111100001111;
         alu16.a = inputa;
-        inputb=16b1010101010101010;
+        inputb=16b0000000011111111;
         alu16.b= inputb;
-        io_led[0] = alu16.out[7:0];
-        io_led[1] = alu16.out[15:8];
-        if(alu16.out==(inputa & inputb)){
-            test_modules.d = test_modules.XOR;
+        out[7:0] = alu16.out[7:0];
+        out[15:8] = alu16.out[15:8];
+        if(module_change.q==0){
+          test_modules.d = test_modules.A;
         }
+      test_modules.A:
+        //alufn[3:0] == 7b0011010 to activate 'A'
+        alu16.alufn=7b0011010;
+        inputa= 16b0000111100001111;
+        alu16.a = inputa;
+        inputb = 16b0000000011111111;
+        alu16.b = inputb;
+        out[7:0] = alu16.out[7:0];
+        out[15:8] = alu16.out[15:8];
+        if(module_change.q==0){
+          test_modules.d = test_modules.NAND;
+        }
+      test_modules.NAND:
+      //alufn[3:0] == 7b0010111 to activate NAND
+        alu16.alufn = 7b0010111;
+        inputa = 16b0000111100001111;
+        alu16.a = inputa;
+        inputb = 16b0000000011111111;
+        alu16.b = inputb;
+        out[7:0] = alu16.out[7:0];
+        out[15:8] = alu16.out[15:8];
+        if(module_change.q==0){
+          test_modules.d = test_modules.NOR;
+        }
+      test_modules.NOR:
+      //alufn[3:0] == 7b0010001 to activate NOR 
+        alu16.alufn = 7b0010001;
+        inputa = 16b0000111100001111;
+        alu16.a = inputa;
+        inputb = 16b0000000011111111;
+        alu16.b = inputb;
+        out[7:0] = alu16.out[7:0];
+        out[15:8] = alu16.out[15:8];
+         if(module_change.q==0){
+          test_modules.d = test_modules.XNOR;
+        }
+      test_modules.XNOR:
+      //alufn[3:0] == 7b0011001 to activate XNOR
+        alu16.alufn = 7b0011001;
+        inputa = 16b0000111100001111;
+        alu16.a = inputa;
+        inputb = 16b0000000011111111;
+        alu16.b = inputb;
+        out[7:0] = alu16.out[7:0];
+        out[15:8] = alu16.out[15:8];
+        if(module_change.q==0){
+          test_modules.d = test_modules.B;
+        }
+      test_modules.B:
+      //alufn[3:0] == 7b0010101 to activate B 
+        alu16.alufn = 7b0010101;
+        inputa = 16b0000111100001111;
+        alu16.a = inputa;
+        inputb = 16b0000000011111111;
+        alu16.b = inputb;
+        out[7:0] = alu16.out[7:0];
+        out[15:8] = alu16.out[15:8];
+        
+        
+        
+            
         
       test_modules.MUL:     // testing multiply module
         // TODO
@@ -114,3 +182,4 @@ module fsm_tester (
     }
   }
 }
+

@@ -4,7 +4,7 @@
    This is a temporary file and any changes made to it will be destroyed.
 */
 
-module alu_2 (
+module alu_3 (
     input [6:0] alufn,
     input [15:0] a,
     input [15:0] b,
@@ -23,7 +23,7 @@ module alu_2 (
   reg [16-1:0] M_adder16_a;
   reg [16-1:0] M_adder16_b;
   reg [7-1:0] M_adder16_alufn;
-  adder_3 adder16 (
+  adder_5 adder16 (
     .a(M_adder16_a),
     .b(M_adder16_b),
     .alufn(M_adder16_alufn),
@@ -37,7 +37,7 @@ module alu_2 (
   reg [7-1:0] M_compare16_alufn;
   reg [16-1:0] M_compare16_a;
   reg [16-1:0] M_compare16_b;
-  compare_4 compare16 (
+  compare_6 compare16 (
     .alufn(M_compare16_alufn),
     .a(M_compare16_a),
     .b(M_compare16_b),
@@ -48,7 +48,7 @@ module alu_2 (
   reg [16-1:0] M_boolean16_a;
   reg [16-1:0] M_boolean16_b;
   reg [7-1:0] M_boolean16_alufn;
-  boolean_5 boolean16 (
+  boolean_7 boolean16 (
     .a(M_boolean16_a),
     .b(M_boolean16_b),
     .alufn(M_boolean16_alufn),
@@ -59,7 +59,7 @@ module alu_2 (
   reg [7-1:0] M_shifter16_alufn;
   reg [16-1:0] M_shifter16_a;
   reg [16-1:0] M_shifter16_b;
-  shifter_6 shifter16 (
+  shifter_8 shifter16 (
     .alufn(M_shifter16_alufn),
     .a(M_shifter16_a),
     .b(M_shifter16_b),
@@ -69,7 +69,7 @@ module alu_2 (
   wire [16-1:0] M_multiply16_out;
   reg [16-1:0] M_multiply16_a;
   reg [16-1:0] M_multiply16_b;
-  multiply_7 multiply16 (
+  multiply_9 multiply16 (
     .a(M_multiply16_a),
     .b(M_multiply16_b),
     .out(M_multiply16_out)
@@ -78,7 +78,7 @@ module alu_2 (
   wire [16-1:0] M_divide16_out;
   reg [16-1:0] M_divide16_a;
   reg [16-1:0] M_divide16_b;
-  divide_8 divide16 (
+  divide_10 divide16 (
     .a(M_divide16_a),
     .b(M_divide16_b),
     .out(M_divide16_out)
