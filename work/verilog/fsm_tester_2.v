@@ -40,12 +40,15 @@ module fsm_tester_2 (
   localparam SHL_test_modules = 5'd11;
   localparam SHR_test_modules = 5'd12;
   localparam SRA_test_modules = 5'd13;
-  localparam CMPEQ_test_modules = 5'd14;
-  localparam CMPLT_test_modules = 5'd15;
-  localparam CMPLE_test_modules = 5'd16;
-  localparam MUL_test_modules = 5'd17;
-  localparam DIVIDE_test_modules = 5'd18;
-  localparam DONE_test_modules = 5'd19;
+  localparam CMPEQ_TRUE_test_modules = 5'd14;
+  localparam CMPEQ_FALSE_test_modules = 5'd15;
+  localparam CMPLT_TRUE_test_modules = 5'd16;
+  localparam CMPLT_FALSE_test_modules = 5'd17;
+  localparam CMPLE_TRUE_test_modules = 5'd18;
+  localparam CMPLE_FALSE_test_modules = 5'd19;
+  localparam MUL_test_modules = 5'd20;
+  localparam DIVIDE_test_modules = 5'd21;
+  localparam DONE_test_modules = 5'd22;
   
   reg [4:0] M_test_modules_d, M_test_modules_q = START_test_modules;
   reg [27:0] M_module_change_d, M_module_change_q = 1'h0;
@@ -200,6 +203,114 @@ module fsm_tester_2 (
         inputa = 16'h0f0f;
         M_alu16_a = inputa;
         inputb = 16'h00ff;
+        M_alu16_b = inputb;
+        out[0+7-:8] = M_alu16_out[0+7-:8];
+        out[8+7-:8] = M_alu16_out[8+7-:8];
+        if (M_module_change_q == 1'h0) begin
+          M_test_modules_d = CMPEQ_TRUE_test_modules;
+        end
+      end
+      CMPEQ_TRUE_test_modules: begin
+        M_alu16_alufn = 7'h33;
+        inputa = 16'haaaa;
+        M_alu16_a = inputa;
+        inputb = 16'haaaa;
+        M_alu16_b = inputb;
+        out[0+7-:8] = M_alu16_out[0+7-:8];
+        out[8+7-:8] = M_alu16_out[8+7-:8];
+        if (M_module_change_q == 1'h0) begin
+          M_test_modules_d = CMPEQ_FALSE_test_modules;
+        end
+      end
+      CMPEQ_FALSE_test_modules: begin
+        M_alu16_alufn = 7'h33;
+        inputa = 16'haaaa;
+        M_alu16_a = inputa;
+        inputb = 16'haaa0;
+        M_alu16_b = inputb;
+        out[0+7-:8] = M_alu16_out[0+7-:8];
+        out[8+7-:8] = M_alu16_out[8+7-:8];
+        if (M_module_change_q == 1'h0) begin
+          M_test_modules_d = CMPLT_TRUE_test_modules;
+        end
+      end
+      CMPLT_TRUE_test_modules: begin
+        M_alu16_alufn = 7'h35;
+        inputa = 16'h0007;
+        M_alu16_a = inputa;
+        inputb = 16'h7000;
+        M_alu16_b = inputb;
+        out[0+7-:8] = M_alu16_out[0+7-:8];
+        out[8+7-:8] = M_alu16_out[8+7-:8];
+        if (M_module_change_q == 1'h0) begin
+          M_test_modules_d = CMPLT_FALSE_test_modules;
+        end
+      end
+      CMPLT_FALSE_test_modules: begin
+        M_alu16_alufn = 7'h35;
+        inputa = 16'h7000;
+        M_alu16_a = inputa;
+        inputb = 16'h0007;
+        M_alu16_b = inputb;
+        out[0+7-:8] = M_alu16_out[0+7-:8];
+        out[8+7-:8] = M_alu16_out[8+7-:8];
+        if (M_module_change_q == 1'h0) begin
+          M_test_modules_d = CMPLE_TRUE_test_modules;
+        end
+      end
+      CMPLE_TRUE_test_modules: begin
+        M_alu16_alufn = 7'h37;
+        inputa = 16'h0007;
+        M_alu16_a = inputa;
+        inputb = 16'h7000;
+        M_alu16_b = inputb;
+        out[0+7-:8] = M_alu16_out[0+7-:8];
+        out[8+7-:8] = M_alu16_out[8+7-:8];
+        if (M_module_change_q == 1'h0) begin
+          M_test_modules_d = CMPLE_FALSE_test_modules;
+        end
+      end
+      CMPLE_FALSE_test_modules: begin
+        M_alu16_alufn = 7'h37;
+        inputa = 16'h7000;
+        M_alu16_a = inputa;
+        inputb = 16'h0007;
+        M_alu16_b = inputb;
+        out[0+7-:8] = M_alu16_out[0+7-:8];
+        out[8+7-:8] = M_alu16_out[8+7-:8];
+        if (M_module_change_q == 1'h0) begin
+          M_test_modules_d = SHL_test_modules;
+        end
+      end
+      SHL_test_modules: begin
+        M_alu16_alufn = 7'h20;
+        inputa = 16'hb773;
+        M_alu16_a = inputa;
+        inputb = 16'h0002;
+        M_alu16_b = inputb;
+        out[0+7-:8] = M_alu16_out[0+7-:8];
+        out[8+7-:8] = M_alu16_out[8+7-:8];
+        if (M_module_change_q == 1'h0) begin
+          M_test_modules_d = SHR_test_modules;
+        end
+      end
+      SHR_test_modules: begin
+        M_alu16_alufn = 7'h21;
+        inputa = 16'hb773;
+        M_alu16_a = inputa;
+        inputb = 16'h0002;
+        M_alu16_b = inputb;
+        out[0+7-:8] = M_alu16_out[0+7-:8];
+        out[8+7-:8] = M_alu16_out[8+7-:8];
+        if (M_module_change_q == 1'h0) begin
+          M_test_modules_d = SRA_test_modules;
+        end
+      end
+      SRA_test_modules: begin
+        M_alu16_alufn = 7'h23;
+        inputa = 16'hb773;
+        M_alu16_a = inputa;
+        inputb = 16'h0002;
         M_alu16_b = inputb;
         out[0+7-:8] = M_alu16_out[0+7-:8];
         out[8+7-:8] = M_alu16_out[8+7-:8];

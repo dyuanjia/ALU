@@ -18,7 +18,7 @@ module fsm_tester (
   
   .clk(clk) {
     .rst(rst) {
-      fsm test_modules = {START, ADD, SUB, AND,NAND, OR,NOR, XOR,XNOR, A, B, SHL, SHR, SRA, CMPEQ, CMPLT, CMPLE, MUL, DIVIDE, DONE}; // instance of a finite state machine
+      fsm test_modules = {START, ADD, SUB, AND,NAND, OR,NOR, XOR,XNOR, A, B, SHL, SHR, SRA, CMPEQ_TRUE, CMPEQ_FALSE,CMPLT_TRUE, CMPLT_FALSE, CMPLE_TRUE, CMPLE_FALSE, MUL, DIVIDE, DONE}; // instance of a finite state machine
       dff module_change[2+DIV];                     // use a flip flop as a counter for different inputs
       dff case_change[DIV];                    // buffer between change in input and error checking
       //display seg;                        // instance used to display error message
@@ -167,7 +167,127 @@ module fsm_tester (
         alu16.b = inputb;
         out[7:0] = alu16.out[7:0];
         out[15:8] = alu16.out[15:8];
+        if(module_change.q==0){
+          test_modules.d = test_modules.CMPEQ_TRUE;
+        }
         
+       test_modules.CMPEQ_TRUE:
+      //alufn[3:0] == 7b0110011 to activate B 
+        alu16.alufn = 7b0110011;
+        inputa = 16b1010101010101010;
+        alu16.a = inputa;
+        inputb = 16b1010101010101010;
+        alu16.b = inputb;
+        out[7:0] = alu16.out[7:0];
+        out[15:8] = alu16.out[15:8];
+        if(module_change.q==0){
+          test_modules.d = test_modules.CMPEQ_FALSE;
+        }
+        
+       test_modules.CMPEQ_FALSE:
+      //alufn[3:0] == 7b0110011 to activate B 
+        alu16.alufn = 7b0110011;
+        inputa = 16b1010101010101010;
+        alu16.a = inputa;
+        inputb = 16b1010101010100000;
+        alu16.b = inputb;
+        out[7:0] = alu16.out[7:0];
+        out[15:8] = alu16.out[15:8];
+        if(module_change.q==0){
+          test_modules.d = test_modules.CMPLT_TRUE;
+        }
+        
+       test_modules.CMPLT_TRUE:
+      //alufn[3:0] == 7b0110101 to activate B 
+        alu16.alufn = 7b0110101;
+        inputa = 16b0000000000000111;
+        alu16.a = inputa;
+        inputb = 16b0111000000000000;
+        alu16.b = inputb;
+        out[7:0] = alu16.out[7:0];
+        out[15:8] = alu16.out[15:8];
+        if(module_change.q==0){
+          test_modules.d = test_modules.CMPLT_FALSE;
+        }
+        
+       test_modules.CMPLT_FALSE:
+      //alufn[3:0] == 7b0110101 to activate B 
+        alu16.alufn = 7b0110101;
+        inputa = 16b0111000000000000;
+        alu16.a = inputa;
+        inputb = 16b0000000000000111;
+        alu16.b = inputb;
+        out[7:0] = alu16.out[7:0];
+        out[15:8] = alu16.out[15:8];
+        if(module_change.q==0){
+          test_modules.d = test_modules.CMPLE_TRUE;
+        }
+        
+       test_modules.CMPLE_TRUE:
+      //alufn[3:0] == 7b0110111 to activate B 
+        alu16.alufn = 7b0110111;
+        inputa = 16b0000000000000111;
+        alu16.a = inputa;
+        inputb = 16b0111000000000000;
+        alu16.b = inputb;
+        out[7:0] = alu16.out[7:0];
+        out[15:8] = alu16.out[15:8];
+        if(module_change.q==0){
+          test_modules.d = test_modules.CMPLE_FALSE;
+        }
+       
+       test_modules.CMPLE_FALSE:
+      //alufn[3:0] == 7b0110111 to activate B 
+        alu16.alufn = 7b0110111;
+        inputa = 16b0111000000000000;
+        alu16.a = inputa;
+        inputb = 16b0000000000000111;
+        alu16.b = inputb;
+        out[7:0] = alu16.out[7:0];
+        out[15:8] = alu16.out[15:8];
+        if(module_change.q==0){
+          test_modules.d = test_modules.SHL;
+        }
+       
+       test_modules.SHL:
+      //alufn[3:0] == 7b0100000 to activate B 
+        alu16.alufn = 7b0100000;
+        inputa = 16b1011011101110011;
+        alu16.a = inputa;
+        inputb = 16b0000000000000010; //shift by 2 places
+        alu16.b = inputb;
+        out[7:0] = alu16.out[7:0];
+        out[15:8] = alu16.out[15:8];
+        if(module_change.q==0){
+          test_modules.d = test_modules.SHR;
+        }
+        
+      test_modules.SHR:
+      //alufn[3:0] == 7b0100001 to activate B 
+        alu16.alufn = 7b0100001;
+        inputa = 16b1011011101110011;
+        alu16.a = inputa;
+        inputb = 16b0000000000000010; //shift by 2 places
+        alu16.b = inputb;
+        out[7:0] = alu16.out[7:0];
+        out[15:8] = alu16.out[15:8];
+        if(module_change.q==0){
+          test_modules.d = test_modules.SRA;
+        }
+        
+      test_modules.SRA:
+      //alufn[3:0] == 7b0100011 to activate B 
+        alu16.alufn = 7b0100011;
+        inputa = 16b1011011101110011;
+        alu16.a = inputa;
+        inputb = 16b0000000000000010; //shift by 2 places
+        alu16.b = inputb;
+        out[7:0] = alu16.out[7:0];
+        out[15:8] = alu16.out[15:8];
+
+        
+       
+
         
         
             
