@@ -10,9 +10,9 @@ module alu (
   
   // Initialize ALU modules
   adder adder16;
-  boolean boolean16;  
-  shifter shifter16;
   compare compare16;
+  boolean boolean16;
+  shifter shifter16;
   multiply multiply16;
   divide divide16;
   
@@ -27,6 +27,10 @@ module alu (
     v = adder16.v;
     n = adder16.n;    
     
+    compare16.alufn = alufn;
+    compare16.a = a;
+    compare16.b = b;
+    
     boolean16.alufn = alufn;
     boolean16.a = a;
     boolean16.b = b;
@@ -34,10 +38,6 @@ module alu (
     shifter16.alufn = alufn;
     shifter16.a = a;
     shifter16.b = b;
-
-    compare16.alufn = alufn;
-    compare16.a = a;
-    compare16.b = b;
     
     multiply16.a = a;
     multiply16.b = b;

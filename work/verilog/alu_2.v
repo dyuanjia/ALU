@@ -33,11 +33,22 @@ module alu_2 (
     .n(M_adder16_n)
   );
   
+  wire [16-1:0] M_compare16_out;
+  reg [7-1:0] M_compare16_alufn;
+  reg [16-1:0] M_compare16_a;
+  reg [16-1:0] M_compare16_b;
+  compare_4 compare16 (
+    .alufn(M_compare16_alufn),
+    .a(M_compare16_a),
+    .b(M_compare16_b),
+    .out(M_compare16_out)
+  );
+  
   wire [16-1:0] M_boolean16_out;
   reg [16-1:0] M_boolean16_a;
   reg [16-1:0] M_boolean16_b;
   reg [7-1:0] M_boolean16_alufn;
-  boolean_4 boolean16 (
+  boolean_5 boolean16 (
     .a(M_boolean16_a),
     .b(M_boolean16_b),
     .alufn(M_boolean16_alufn),
@@ -48,22 +59,11 @@ module alu_2 (
   reg [7-1:0] M_shifter16_alufn;
   reg [16-1:0] M_shifter16_a;
   reg [16-1:0] M_shifter16_b;
-  shifter_5 shifter16 (
+  shifter_6 shifter16 (
     .alufn(M_shifter16_alufn),
     .a(M_shifter16_a),
     .b(M_shifter16_b),
     .out(M_shifter16_out)
-  );
-  
-  wire [16-1:0] M_compare16_out;
-  reg [7-1:0] M_compare16_alufn;
-  reg [16-1:0] M_compare16_a;
-  reg [16-1:0] M_compare16_b;
-  compare_6 compare16 (
-    .alufn(M_compare16_alufn),
-    .a(M_compare16_a),
-    .b(M_compare16_b),
-    .out(M_compare16_out)
   );
   
   wire [16-1:0] M_multiply16_out;
@@ -91,15 +91,15 @@ module alu_2 (
     z = M_adder16_z;
     v = M_adder16_v;
     n = M_adder16_n;
+    M_compare16_alufn = alufn;
+    M_compare16_a = a;
+    M_compare16_b = b;
     M_boolean16_alufn = alufn;
     M_boolean16_a = a;
     M_boolean16_b = b;
     M_shifter16_alufn = alufn;
     M_shifter16_a = a;
     M_shifter16_b = b;
-    M_compare16_alufn = alufn;
-    M_compare16_a = a;
-    M_compare16_b = b;
     M_multiply16_a = a;
     M_multiply16_b = b;
     M_divide16_a = a;

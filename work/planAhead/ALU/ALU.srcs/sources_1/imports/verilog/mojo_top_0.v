@@ -61,8 +61,6 @@ module mojo_top_0 (
   );
   
   always @* begin
-    M_modes_d = M_modes_q;
-    
     M_reset_cond_in = ~rst_n;
     rst = M_reset_cond_out;
     M_alu16_alufn = alufn;
@@ -82,9 +80,6 @@ module mojo_top_0 (
         io_led[16+2+0-:1] = M_alu16_z;
         io_led[16+1+0-:1] = M_alu16_v;
         io_led[16+0+0-:1] = M_alu16_n;
-        if (io_button[1+0-:1]) begin
-          M_modes_d = AUTO_modes;
-        end
       end
       AUTO_modes: begin
         io_led[0+7-:8] = M_alu16_out[0+7-:8];
