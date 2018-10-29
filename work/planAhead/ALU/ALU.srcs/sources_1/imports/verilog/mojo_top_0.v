@@ -24,7 +24,23 @@ module mojo_top_0 (
     input [23:0] io_dip,
     input [6:0] alufn,
     input [15:0] a,
-    input [15:0] b
+    input [15:0] b,
+    input a0,
+    input a1,
+    input a2,
+    input a3,
+    input a4,
+    input a5,
+    input a6,
+    input a7,
+    input a8,
+    input a9,
+    input a10,
+    input a11,
+    input a12,
+    input a13,
+    input a14,
+    input a15
   );
   
   
@@ -71,7 +87,6 @@ module mojo_top_0 (
     case (M_modes_q)
       MANUAL_modes: begin
         M_alu16_alufn = io_dip[16+0+6-:7];
-        M_alu16_a = 16'h0180;
         M_alu16_b[8+7-:8] = io_dip[8+7-:8];
         M_alu16_b[0+7-:8] = io_dip[0+7-:8];
         io_led[0+7-:8] = M_alu16_out[0+7-:8];
@@ -80,6 +95,22 @@ module mojo_top_0 (
         io_led[16+2+0-:1] = M_alu16_z;
         io_led[16+1+0-:1] = M_alu16_v;
         io_led[16+0+0-:1] = M_alu16_n;
+        M_alu16_a[0+0-:1] = a0;
+        M_alu16_a[1+0-:1] = a1;
+        M_alu16_a[2+0-:1] = a2;
+        M_alu16_a[3+0-:1] = a3;
+        M_alu16_a[4+0-:1] = a4;
+        M_alu16_a[5+0-:1] = a5;
+        M_alu16_a[6+0-:1] = a6;
+        M_alu16_a[7+0-:1] = a7;
+        M_alu16_a[8+0-:1] = a8;
+        M_alu16_a[9+0-:1] = a9;
+        M_alu16_a[10+0-:1] = a10;
+        M_alu16_a[11+0-:1] = a11;
+        M_alu16_a[12+0-:1] = a12;
+        M_alu16_a[13+0-:1] = a13;
+        M_alu16_a[14+0-:1] = a14;
+        M_alu16_a[15+0-:1] = a15;
       end
       AUTO_modes: begin
         io_led[0+7-:8] = M_alu16_out[0+7-:8];

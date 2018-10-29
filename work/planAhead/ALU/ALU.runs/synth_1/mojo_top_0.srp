@@ -3,7 +3,7 @@ Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 --> 
 
 Total REAL time to Xst completion: 0.00 secs
-Total CPU time to Xst completion: 0.06 secs
+Total CPU time to Xst completion: 0.05 secs
  
 --> Reading design: mojo_top_0.prj
 
@@ -94,13 +94,13 @@ Elaborating module <shifter_6>.
 Elaborating module <multiply_7>.
 
 Elaborating module <divide_8>.
-WARNING:HDLCompiler:634 - "C:/Users/77900/OneDrive/Documents/mojo/ALU/work/planAhead/ALU/ALU.srcs/sources_1/imports/verilog/mojo_top_0.v" Line 44: Net <M_modes_d> does not have a driver.
+WARNING:HDLCompiler:634 - "C:/Users/77900/OneDrive/Documents/mojo/ALU/work/planAhead/ALU/ALU.srcs/sources_1/imports/verilog/mojo_top_0.v" Line 60: Net <M_modes_d> does not have a driver.
 WARNING:Xst:2972 - "C:/Users/77900/OneDrive/Documents/mojo/ALU/work/planAhead/ALU/ALU.srcs/sources_1/imports/verilog/alu_2.v" line 81. All outputs of instance <divide16> of block <divide_8> are unconnected in block <alu_2>. Underlying logic will be removed.
 
 =========================================================================
 *                           HDL Synthesis                               *
 =========================================================================
-WARNING:Xst:2972 - "C:/Users/77900/OneDrive/Documents/mojo/ALU/work/planAhead/ALU/ALU.srcs/sources_1/imports/verilog/mojo_top_0.v" line 36. All outputs of instance <reset_cond> of block <reset_conditioner_1> are unconnected in block <mojo_top_0>. Underlying logic will be removed.
+WARNING:Xst:2972 - "C:/Users/77900/OneDrive/Documents/mojo/ALU/work/planAhead/ALU/ALU.srcs/sources_1/imports/verilog/mojo_top_0.v" line 52. All outputs of instance <reset_cond> of block <reset_conditioner_1> are unconnected in block <mojo_top_0>. Underlying logic will be removed.
 
 Synthesizing Unit <mojo_top_0>.
     Related source file is "C:/Users/77900/OneDrive/Documents/mojo/ALU/work/planAhead/ALU/ALU.srcs/sources_1/imports/verilog/mojo_top_0.v".
@@ -113,12 +113,12 @@ WARNING:Xst:647 - Input <spi_sck> is never used. This port will be preserved and
 WARNING:Xst:647 - Input <avr_tx> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
 WARNING:Xst:647 - Input <avr_rx_busy> is never used. This port will be preserved and left unconnected if it belongs to a top-level block or it belongs to a sub-block and the hierarchy of this sub-block is preserved.
 WARNING:Xst:653 - Signal <M_modes_d> is used but never assigned. This sourceless signal will be automatically connected to value GND.
-    Found 1-bit tristate buffer for signal <spi_miso> created at line 63
-    Found 1-bit tristate buffer for signal <spi_channel<3>> created at line 63
-    Found 1-bit tristate buffer for signal <spi_channel<2>> created at line 63
-    Found 1-bit tristate buffer for signal <spi_channel<1>> created at line 63
-    Found 1-bit tristate buffer for signal <spi_channel<0>> created at line 63
-    Found 1-bit tristate buffer for signal <avr_rx> created at line 63
+    Found 1-bit tristate buffer for signal <spi_miso> created at line 79
+    Found 1-bit tristate buffer for signal <spi_channel<3>> created at line 79
+    Found 1-bit tristate buffer for signal <spi_channel<2>> created at line 79
+    Found 1-bit tristate buffer for signal <spi_channel<1>> created at line 79
+    Found 1-bit tristate buffer for signal <spi_channel<0>> created at line 79
+    Found 1-bit tristate buffer for signal <avr_rx> created at line 79
     WARNING:Xst:2404 -  FFs/Latches <M_modes_q<0:0>> (without init value) have a constant value of 0 in block <mojo_top_0>.
     Summary:
 	inferred   6 Tristate(s).
@@ -266,9 +266,11 @@ Optimizing unit <mojo_top_0> ...
 
 Optimizing unit <adder_3> ...
 
+Optimizing unit <boolean_5> ...
+
 Mapping all equations...
 Building and optimizing final netlist ...
-Found area constraint ratio of 100 (+ 0) on block mojo_top_0, actual ratio is 3.
+Found area constraint ratio of 100 (+ 0) on block mojo_top_0, actual ratio is 6.
 
 Final Macro Processing ...
 
@@ -297,22 +299,23 @@ Top Level Output File Name         : mojo_top_0.ngc
 
 Primitive and Black Box Usage:
 ------------------------------
-# BELS                             : 265
+# BELS                             : 360
 #      GND                         : 4
-#      INV                         : 29
-#      LUT1                        : 18
-#      LUT2                        : 17
-#      LUT3                        : 24
-#      LUT4                        : 5
-#      LUT5                        : 11
-#      LUT6                        : 43
-#      MUXCY                       : 46
-#      VCC                         : 4
+#      INV                         : 1
+#      LUT1                        : 14
+#      LUT2                        : 34
+#      LUT3                        : 29
+#      LUT4                        : 20
+#      LUT5                        : 45
+#      LUT6                        : 83
+#      MUXCY                       : 60
+#      MUXF7                       : 4
+#      VCC                         : 2
 #      XORCY                       : 64
 # FlipFlops/Latches                : 1
 #      LD                          : 1
-# IO Buffers                       : 73
-#      IBUF                        : 23
+# IO Buffers                       : 89
+#      IBUF                        : 39
 #      OBUF                        : 44
 #      OBUFT                       : 6
 # DSPs                             : 1
@@ -326,19 +329,19 @@ Selected Device : 6slx9tqg144-2
 
 Slice Logic Utilization: 
  Number of Slice Registers:               1  out of  11440     0%  
- Number of Slice LUTs:                  147  out of   5720     2%  
-    Number used as Logic:               147  out of   5720     2%  
+ Number of Slice LUTs:                  226  out of   5720     3%  
+    Number used as Logic:               226  out of   5720     3%  
 
 Slice Logic Distribution: 
- Number of LUT Flip Flop pairs used:    147
-   Number with an unused Flip Flop:     146  out of    147    99%  
-   Number with an unused LUT:             0  out of    147     0%  
-   Number of fully used LUT-FF pairs:     1  out of    147     0%  
+ Number of LUT Flip Flop pairs used:    226
+   Number with an unused Flip Flop:     225  out of    226    99%  
+   Number with an unused LUT:             0  out of    226     0%  
+   Number of fully used LUT-FF pairs:     1  out of    226     0%  
    Number of unique control sets:         1
 
 IO Utilization: 
- Number of IOs:                         126
- Number of bonded IOBs:                  73  out of    102    71%  
+ Number of IOs:                         142
+ Number of bonded IOBs:                  89  out of    102    87%  
 
 Specific Feature Utilization:
  Number of DSP48A1s:                      1  out of     16     6%  
@@ -380,9 +383,9 @@ Timing Summary:
 Speed Grade: -2
 
    Minimum period: No path found
-   Minimum input arrival time before clock: 7.221ns
-   Maximum output required time after clock: 6.685ns
-   Maximum combinational path delay: 11.291ns
+   Minimum input arrival time before clock: 9.002ns
+   Maximum output required time after clock: 6.598ns
+   Maximum combinational path delay: 12.607ns
 
 Timing Details:
 ---------------
@@ -390,9 +393,9 @@ All values displayed in nanoseconds (ns)
 
 =========================================================================
 Timing constraint: Default OFFSET IN BEFORE for Clock 'alu16/compare16/alufn[2]_PWR_6_o_Mux_5_o'
-  Total number of paths / destination ports: 464 / 1
+  Total number of paths / destination ports: 4236 / 1
 -------------------------------------------------------------------------
-Offset:              7.221ns (Levels of Logic = 20)
+Offset:              9.002ns (Levels of Logic = 14)
   Source:            io_dip<1> (PAD)
   Destination:       alu16/compare16/out_0 (LATCH)
   Destination Clock: alu16/compare16/alufn[2]_PWR_6_o_Mux_5_o falling
@@ -401,38 +404,32 @@ Offset:              7.221ns (Levels of Logic = 20)
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     IBUF:I->O            20   1.328   1.285  io_dip_1_IBUF (Sh37)
+     IBUF:I->O            45   1.328   1.737  io_dip_1_IBUF (io_dip_1_IBUF)
      begin scope: 'alu16:b<1>'
      begin scope: 'alu16/compare16:b<1>'
      begin scope: 'alu16/compare16/adder16:b<1>'
-     INV:I->O              0   0.255   0.000  n0034<1>11_INV_0 (n0034<1>1)
-     XORCY:LI->O           1   0.149   0.682  Madd_n0036_xor<1> (Mmux_msbout_rs_lut<1>)
-     LUT1:I0->O            1   0.254   0.000  Mmux_msbout_rs_cy<1>_rt (Mmux_msbout_rs_cy<1>_rt)
-     MUXCY:S->O            1   0.215   0.000  Mmux_msbout_rs_cy<1> (Mmux_msbout_rs_cy<1>)
-     MUXCY:CI->O           1   0.023   0.000  Mmux_msbout_rs_cy<2> (Mmux_msbout_rs_cy<2>)
-     MUXCY:CI->O           1   0.023   0.000  Mmux_msbout_rs_cy<3> (Mmux_msbout_rs_cy<3>)
-     MUXCY:CI->O           1   0.023   0.000  Mmux_msbout_rs_cy<4> (Mmux_msbout_rs_cy<4>)
-     MUXCY:CI->O           1   0.023   0.000  Mmux_msbout_rs_cy<5> (Mmux_msbout_rs_cy<5>)
-     MUXCY:CI->O           1   0.023   0.000  Mmux_msbout_rs_cy<6> (Mmux_msbout_rs_cy<6>)
-     MUXCY:CI->O           1   0.023   0.000  Mmux_msbout_rs_cy<7> (Mmux_msbout_rs_cy<7>)
-     MUXCY:CI->O           1   0.023   0.000  Mmux_msbout_rs_cy<8> (Mmux_msbout_rs_cy<8>)
-     MUXCY:CI->O           1   0.023   0.000  Mmux_msbout_rs_cy<9> (Mmux_msbout_rs_cy<9>)
-     MUXCY:CI->O           1   0.023   0.000  Mmux_msbout_rs_cy<10> (Mmux_msbout_rs_cy<10>)
-     MUXCY:CI->O           1   0.023   0.000  Mmux_msbout_rs_cy<11> (Mmux_msbout_rs_cy<11>)
-     XORCY:CI->O           1   0.206   0.958  Mmux_msbout_rs_xor<12> (msbout<12>)
-     end scope: 'alu16/compare16/adder16:msbout<12>'
-     LUT4:I0->O            1   0.254   1.112  Mmux_alufn[2]_M_adder16_z[0]_Mux_4_o14 (Mmux_alufn[2]_M_adder16_z[0]_Mux_4_o13)
-     LUT6:I1->O            1   0.254   0.000  Mmux_alufn[2]_M_adder16_z[0]_Mux_4_o15 (alufn[2]_M_adder16_z[0]_Mux_4_o)
+     LUT2:I1->O            1   0.254   0.000  Madd_n0036_lut<1> (Madd_n0036_lut<1>)
+     MUXCY:S->O            1   0.215   0.000  Madd_n0036_cy<1> (Madd_n0036_cy<1>)
+     MUXCY:CI->O           1   0.023   0.000  Madd_n0036_cy<2> (Madd_n0036_cy<2>)
+     MUXCY:CI->O           1   0.023   0.000  Madd_n0036_cy<3> (Madd_n0036_cy<3>)
+     XORCY:CI->O           1   0.206   0.682  Madd_n0036_xor<4> (Mmux_msbout_rs_lut<4>)
+     LUT1:I0->O            1   0.254   0.000  Mmux_msbout_rs_cy<4>_rt (Mmux_msbout_rs_cy<4>_rt)
+     MUXCY:S->O            1   0.215   0.000  Mmux_msbout_rs_cy<4> (Mmux_msbout_rs_cy<4>)
+     XORCY:CI->O           1   0.206   1.137  Mmux_msbout_rs_xor<5> (msbout<5>)
+     end scope: 'alu16/compare16/adder16:msbout<5>'
+     LUT6:I0->O            1   0.254   1.137  Mmux_alufn[2]_M_adder16_z[0]_Mux_4_o11 (Mmux_alufn[2]_M_adder16_z[0]_Mux_4_o1)
+     LUT6:I0->O            1   0.254   0.790  Mmux_alufn[2]_M_adder16_z[0]_Mux_4_o14_SW0 (N4)
+     LUT6:I4->O            1   0.250   0.000  Mmux_alufn[2]_M_adder16_z[0]_Mux_4_o14 (alufn[2]_M_adder16_z[0]_Mux_4_o)
      LD:D                      0.036          out_0
     ----------------------------------------
-    Total                      7.221ns (3.184ns logic, 4.037ns route)
-                                       (44.1% logic, 55.9% route)
+    Total                      9.002ns (3.519ns logic, 5.483ns route)
+                                       (39.1% logic, 60.9% route)
 
 =========================================================================
 Timing constraint: Default OFFSET OUT AFTER for Clock 'alu16/compare16/alufn[2]_PWR_6_o_Mux_5_o'
   Total number of paths / destination ports: 1 / 1
 -------------------------------------------------------------------------
-Offset:              6.685ns (Levels of Logic = 4)
+Offset:              6.598ns (Levels of Logic = 4)
   Source:            alu16/compare16/out_0 (LATCH)
   Destination:       io_led<0> (PAD)
   Source Clock:      alu16/compare16/alufn[2]_PWR_6_o_Mux_5_o falling
@@ -441,49 +438,40 @@ Offset:              6.685ns (Levels of Logic = 4)
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     LD:G->Q               1   0.581   0.910  out_0 (out_0)
+     LD:G->Q               1   0.581   0.958  out_0 (out_0)
      end scope: 'alu16/compare16:out<0>'
-     LUT6:I3->O            1   0.235   1.112  Mmux_out25 (Mmux_out24)
-     LUT5:I0->O            1   0.254   0.681  Mmux_out26 (out<0>)
+     LUT6:I2->O            1   0.254   0.958  Mmux_out210 (Mmux_out26)
+     LUT5:I1->O            1   0.254   0.681  Mmux_out211 (out<0>)
      end scope: 'alu16:out<0>'
      OBUF:I->O                 2.912          io_led_0_OBUF (io_led<0>)
     ----------------------------------------
-    Total                      6.685ns (3.982ns logic, 2.703ns route)
-                                       (59.6% logic, 40.4% route)
+    Total                      6.598ns (4.001ns logic, 2.597ns route)
+                                       (60.6% logic, 39.4% route)
 
 =========================================================================
 Timing constraint: Default path analysis
-  Total number of paths / destination ports: 2712 / 19
+  Total number of paths / destination ports: 12719 / 19
 -------------------------------------------------------------------------
-Delay:               11.291ns (Levels of Logic = 14)
-  Source:            io_dip<0> (PAD)
-  Destination:       io_led<18> (PAD)
+Delay:               12.607ns (Levels of Logic = 7)
+  Source:            a15 (PAD)
+  Destination:       io_led<15> (PAD)
 
-  Data Path: io_dip<0> to io_led<18>
+  Data Path: a15 to io_led<15>
                                 Gate     Net
     Cell:in->out      fanout   Delay   Delay  Logical Name (Net Name)
     ----------------------------------------  ------------
-     IBUF:I->O            15   1.328   1.154  io_dip_0_IBUF (io_dip_0_IBUF)
-     begin scope: 'alu16:b<0>'
-     begin scope: 'alu16/compare16:b<0>'
-     begin scope: 'alu16/compare16/adder16:b<0>'
-     INV:I->O              0   0.255   0.000  n0034<0>1_INV_0 (Madd_n0036_lut<0>)
-     end scope: 'alu16/compare16/adder16:Madd_n0036_lut<0>'
-     end scope: 'alu16/compare16:Madd_n0036_lut<0>'
-     begin scope: 'alu16/adder16:Madd_n0036_lut<0>'
-     XORCY:LI->O           2   0.149   0.726  Madd_n0036_xor<0> (n0036<0>)
-     LUT3:I2->O            1   0.254   0.000  Mmux_msbout_rs_lut<0> (Mmux_msbout_rs_lut<0>)
-     MUXCY:S->O            1   0.215   0.000  Mmux_msbout_rs_cy<0> (Mmux_msbout_rs_cy<0>)
-     XORCY:CI->O           2   0.206   1.181  Mmux_msbout_rs_xor<1> (out<1>)
-     LUT6:I0->O            1   0.254   0.790  z1 (z)
-     LUT6:I4->O            1   0.250   0.682  z4_SW0 (N2)
-     LUT6:I5->O            1   0.254   0.681  z4 (io_led_18_OBUF)
-     end scope: 'alu16/adder16:z'
-     end scope: 'alu16:z'
-     OBUF:I->O                 2.912          io_led_18_OBUF (io_led<18>)
+     IBUF:I->O            27   1.328   1.435  a15_IBUF (Sh15)
+     begin scope: 'alu16:a<15>'
+     begin scope: 'alu16/multiply16:a<15>'
+     DSP48A1:B15->M15      1   3.894   0.910  Mmult_n0003 (out<15>)
+     end scope: 'alu16/multiply16:out<15>'
+     LUT5:I2->O            1   0.235   0.958  Mmux_out145 (Mmux_out144)
+     LUT5:I1->O            1   0.254   0.681  Mmux_out146 (out<15>)
+     end scope: 'alu16:out<15>'
+     OBUF:I->O                 2.912          io_led_15_OBUF (io_led<15>)
     ----------------------------------------
-    Total                     11.291ns (6.077ns logic, 5.214ns route)
-                                       (53.8% logic, 46.2% route)
+    Total                     12.607ns (8.623ns logic, 3.984ns route)
+                                       (68.4% logic, 31.6% route)
 
 =========================================================================
 
@@ -494,11 +482,11 @@ Cross Clock Domains Report:
 
 
 Total REAL time to Xst completion: 4.00 secs
-Total CPU time to Xst completion: 3.89 secs
+Total CPU time to Xst completion: 4.24 secs
  
 --> 
 
-Total memory usage is 250720 kilobytes
+Total memory usage is 251296 kilobytes
 
 Number of errors   :    0 (   0 filtered)
 Number of warnings :   21 (   0 filtered)

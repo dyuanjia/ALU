@@ -7,7 +7,7 @@ create_project $projName "$projDir/$projName" -part $device
 set_property design_mode RTL [get_filesets sources_1]
 set verilogSources [list "C:/Users/77900/OneDrive/Documents/mojo/ALU/work/verilog/mojo_top_0.v" "C:/Users/77900/OneDrive/Documents/mojo/ALU/work/verilog/reset_conditioner_1.v" "C:/Users/77900/OneDrive/Documents/mojo/ALU/work/verilog/alu_2.v" "C:/Users/77900/OneDrive/Documents/mojo/ALU/work/verilog/adder_3.v" "C:/Users/77900/OneDrive/Documents/mojo/ALU/work/verilog/compare_4.v" "C:/Users/77900/OneDrive/Documents/mojo/ALU/work/verilog/boolean_5.v" "C:/Users/77900/OneDrive/Documents/mojo/ALU/work/verilog/shifter_6.v" "C:/Users/77900/OneDrive/Documents/mojo/ALU/work/verilog/multiply_7.v" "C:/Users/77900/OneDrive/Documents/mojo/ALU/work/verilog/divide_8.v"]
 import_files -fileset [get_filesets sources_1] -force -norecurse $verilogSources
-set ucfSources [list  "C:/Program\ Files/Mojo\ IDE/library/components/io_shield.ucf" "C:/Program\ Files/Mojo\ IDE/library/components/mojo.ucf"]
+set ucfSources [list "C:/Users/77900/OneDrive/Documents/mojo/ALU/constraint/pins.ucf" "C:/Program\ Files/Mojo\ IDE/library/components/io_shield.ucf" "C:/Program\ Files/Mojo\ IDE/library/components/mojo.ucf"]
 import_files -fileset [get_filesets constrs_1] -force -norecurse $ucfSources
 set_property -name {steps.bitgen.args.More Options} -value {-g Binary:Yes -g Compress} -objects [get_runs impl_1]
 set_property steps.map.args.mt on [get_runs impl_1]
