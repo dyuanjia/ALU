@@ -1,0 +1,116 @@
+module fsm_tester (
+    input clk,  // clock
+    input rst,  // reset
+    output io_led [3][8],   // LEDs on IO Shield
+    output io_seg [8],      // 7-segment LEDs on IO Shield
+    output io_sel [4],      // Digit select on IO Shield
+    input io_button [5],    // 5 buttons on IO Shield
+    input io_dip [3][8],    // DIP switches on IO Shield
+    input alufn[7],
+    input a [16],
+    input b [16],
+    output out [16]
+  ) {
+  
+  const DIV = 26;           // regulates the speed in which the inputs are generated
+  sig inputa[16];
+  sig inputb[16];
+  sig aluout[16];
+  sig alufntest[7];
+  
+  .clk(clk) {
+    .rst(rst) {
+      fsm test_modules = {ADD, SUB, MUL, AND, OR, XOR, A, B, SHL, SHR, SRA, CMPEQ, CMPLT, CMPLE, MUL, DIVIDE, DONE}; // instance of a finite state machine
+      dff ctr[3+DIV];                     // use a flip flop as a counter for different inputs
+      dff buffer[DIV];                    // buffer between change in input and error checking
+      display seg;                        // instance used to display error message
+    }
+  }
+  
+  alu alu16;
+  
+  always {
+    io_led = 3x{{8h00}};     // turn LEDs off
+    io_seg = ~seg.seg;       // connect segments to the driver
+    io_sel = ~seg.sel;       // connect select to the driver
+    // increment buffer counter
+    alu16.alufn = alufn;
+    alu16.a = 16b0;
+    alu16.b = 16b0;
+    // initialize variables
+    seg.chars = {4h0, 4h0, 4h0, 4h0};
+    out = 16b0;
+
+        
+    case (test_modules.q) {
+      test_modules.ADD:     // testing adder module
+        alu16.alufn[0]=0;
+
+        inputa=16b11;
+        //io_led[0] = inputa[7:0];
+        alu16.a = inputa;
+        inputb=16b11000;
+        alu16.b= inputb;
+        io_led[0] = alu16.out[7:0];
+        io_led[1] = alu16.out[15:8];
+        if(alu16.out==inputa+inputb){
+            test_modules.d = test_modules.SUB;
+        }
+      test_modules.SUB:
+        alu16.alufn[0]=1;
+        inputa=16b11011;
+        alu16.a = inputa;
+        inputb=16b11;
+        alu16.b= inputb;
+        io_led[0] = alu16.out[7:0];
+        io_led[1] = alu16.out[15:8];
+        if(alu16.out==inputa+inputb){
+            test_modules.d = test_modules.AND;
+        }
+      test_modules.AND:
+      //alufn[3:0] == 4b1000 to activate AND
+        alu16.alufn[3:0]=4b1000;
+        inputa=16b1010101010101010;
+        alu16.a = inputa;
+        inputb=16b1010101010101010;
+        alu16.b= inputb;
+        io_led[0] = alu16.out[7:0];
+        io_led[1] = alu16.out[15:8];
+        if(alu16.out==(inputa & inputb)){
+            test_modules.d = test_modules.OR;
+        }
+      test_modules.OR:
+        //alufn[3:0] == 4b1110 to activate OR
+        alu16.alufn[3:0]=4b1110;
+        inputa=16b1010101010101010;
+        alu16.a = inputa;
+        inputb=16b1010101010101010;
+        alu16.b= inputb;
+        io_led[0] = alu16.out[7:0];
+        io_led[1] = alu16.out[15:8];
+        if(alu16.out==(inputa & inputb)){
+            test_modules.d = test_modules.XOR;
+        }
+      test_modules.XOR:
+        //alufn[3:0] == 4b0110 to activate XOR
+        alu16.alufn[3:0]=4b0110;
+        inputa=16b1010101010101010;
+        alu16.a = inputa;
+        inputb=16b1010101010101010;
+        alu16.b= inputb;
+        io_led[0] = alu16.out[7:0];
+        io_led[1] = alu16.out[15:8];
+        if(alu16.out==(inputa & inputb)){
+            test_modules.d = test_modules.XOR;
+        }
+        
+      test_modules.MUL:     // testing multiply module
+        // TODO
+        out = 16b0;
+        
+      test_modules.DIVIDE:     // testing divide module
+        // TODO
+        out = 16b0;
+    }
+  }
+}

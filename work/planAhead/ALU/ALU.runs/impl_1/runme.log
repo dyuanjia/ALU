@@ -34,7 +34,7 @@ NGDBUILD Design Results Summary:
   Number of warnings:   0
 
 Writing NGD file "mojo_top_0.ngd" ...
-Total REAL time to NGDBUILD completion:  4 sec
+Total REAL time to NGDBUILD completion:  5 sec
 Total CPU time to NGDBUILD completion:   2 sec
 
 Writing NGDBUILD log file "mojo_top_0.bld"...
@@ -68,7 +68,7 @@ INFO:Map:215 - The Interim Design Summary has been generated in the MAP Report
    (.mrp).
 Running timing-driven placement...
 Total REAL time at the beginning of Placer: 3 secs 
-Total CPU  time at the beginning of Placer: 2 secs 
+Total CPU  time at the beginning of Placer: 3 secs 
 
 Phase 1.1  Initial Placement Analysis
 Phase 1.1  Initial Placement Analysis (Checksum:9a6ad472) REAL time: 3 secs 
@@ -77,21 +77,21 @@ Phase 2.7  Design Feasibility Check
 INFO:Place:834 - Only a subset of IOs are locked. Out of 97 IOs, 87 are locked
    and 10 are not locked. If you would like to print the names of these IOs,
    please set the environment variable XIL_PAR_DESIGN_CHECK_VERBOSE to 1. 
-Phase 2.7  Design Feasibility Check (Checksum:9a6ad472) REAL time: 3 secs 
+Phase 2.7  Design Feasibility Check (Checksum:9a6ad472) REAL time: 4 secs 
 
 Phase 3.31  Local Placement Optimization
-Phase 3.31  Local Placement Optimization (Checksum:9a6ad472) REAL time: 3 secs 
+Phase 3.31  Local Placement Optimization (Checksum:9a6ad472) REAL time: 4 secs 
 
 Phase 4.2  Initial Placement for Architecture Specific Features
 ...
 Phase 4.2  Initial Placement for Architecture Specific Features
-(Checksum:9a6ad472) REAL time: 3 secs 
+(Checksum:9a6ad472) REAL time: 4 secs 
 
 Phase 5.36  Local Placement Optimization
-Phase 5.36  Local Placement Optimization (Checksum:9a6ad472) REAL time: 3 secs 
+Phase 5.36  Local Placement Optimization (Checksum:9a6ad472) REAL time: 4 secs 
 
 Phase 6.30  Global Clock Region Assignment
-Phase 6.30  Global Clock Region Assignment (Checksum:9a6ad472) REAL time: 3 secs 
+Phase 6.30  Global Clock Region Assignment (Checksum:9a6ad472) REAL time: 4 secs 
 
 Phase 7.3  Local Placement Optimization
 ...
@@ -190,7 +190,7 @@ Specific Feature Utilization:
 Average Fanout of Non-Clock Nets:                3.51
 
 Peak Memory Usage:  297 MB
-Total REAL time to MAP completion:  4 secs 
+Total REAL time to MAP completion:  5 secs 
 Total CPU time to MAP completion (all processors):   4 secs 
 
 Mapping completed.
@@ -288,8 +288,8 @@ Router effort level (-rl):    High
 
 WARNING:Par:545 - Multi-threading ("-mt" option) is not supported for the Performance Evaluation Mode. PAR will use only one processor.
 
-Starting initial Timing Analysis.  REAL time: 2 secs 
-Finished initial Timing Analysis.  REAL time: 2 secs 
+Starting initial Timing Analysis.  REAL time: 3 secs 
+Finished initial Timing Analysis.  REAL time: 3 secs 
 
 WARNING:Par:288 - The signal clk_IBUF has no load.  PAR will not attempt to route this signal.
 WARNING:Par:288 - The signal io_button(0)_IBUF has no load.  PAR will not attempt to route this signal.
@@ -308,9 +308,9 @@ WARNING:Par:288 - The signal spi_mosi_IBUF has no load.  PAR will not attempt to
 Starting Router
 
 
-Phase  1  : 1149 unrouted;      REAL time: 2 secs 
+Phase  1  : 1149 unrouted;      REAL time: 3 secs 
 
-Phase  2  : 1028 unrouted;      REAL time: 2 secs 
+Phase  2  : 1028 unrouted;      REAL time: 3 secs 
 
 Phase  3  : 443 unrouted;      REAL time: 4 secs 
 
@@ -330,7 +330,7 @@ Phase  9  : 0 unrouted; (Par is working to improve performance)     REAL time: 5
 
 Phase 10  : 0 unrouted; (Par is working to improve performance)     REAL time: 5 secs 
 Total REAL time to Router completion: 5 secs 
-Total CPU time to Router completion: 5 secs 
+Total CPU time to Router completion: 4 secs 
 
 Partition Implementation Status
 -------------------------------
@@ -364,7 +364,7 @@ WARNING:Par:283 - There are 14 loadless signals in this design. This design will
 Total REAL time to PAR completion: 5 secs 
 Total CPU time to PAR completion: 5 secs 
 
-Peak Memory Usage:  284 MB
+Peak Memory Usage:  285 MB
 
 Placer: Placement generated during map.
 Routing: Completed - No errors found.
@@ -386,7 +386,7 @@ Loading device for application Rf_Device from file '6slx9.nph' in environment
 C:\Xilinx\14.7\ISE_DS\ISE\.
    "mojo_top_0" is an NCD, version 3.2, device xc6slx9, package tqg144, speed -2
 
-Analysis completed Mon Oct 29 23:39:12 2018
+Analysis completed Mon Oct 29 23:49:58 2018
 --------------------------------------------------------------------------------
 
 Generating Report ...

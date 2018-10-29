@@ -1,0 +1,16 @@
+module char (
+    input char[4],
+    output segs[7] // segments on the display    
+  ) {
+
+  always {
+    case (char) {
+      0: segs = 7b0000000;
+      1: segs = 7b1110001;
+      2: segs = 7b1110111;
+      3: segs = 7b0000110;
+      4: segs = 7b0111000;      
+      default: segs = 7b0000000;
+    }
+  }
+}
