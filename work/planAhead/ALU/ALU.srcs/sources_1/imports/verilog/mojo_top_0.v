@@ -50,10 +50,12 @@ module mojo_top_0 (
   wire [1-1:0] M_tester_n;
   wire [1-1:0] M_tester_z;
   reg [5-1:0] M_tester_io_button;
+  reg [24-1:0] M_tester_io_dip;
   fsm_tester_2 tester (
     .clk(clk),
     .rst(rst),
     .io_button(M_tester_io_button),
+    .io_dip(M_tester_io_dip),
     .io_led(M_tester_io_led),
     .io_seg(M_tester_io_seg),
     .io_sel(M_tester_io_sel),
@@ -82,10 +84,12 @@ module mojo_top_0 (
   reg [7-1:0] M_alu16_alufn;
   reg [16-1:0] M_alu16_a;
   reg [16-1:0] M_alu16_b;
+  reg [1-1:0] M_alu16_e;
   alu_4 alu16 (
     .alufn(M_alu16_alufn),
     .a(M_alu16_a),
     .b(M_alu16_b),
+    .e(M_alu16_e),
     .out(M_alu16_out),
     .z(M_alu16_z),
     .v(M_alu16_v),
@@ -104,7 +108,13 @@ module mojo_top_0 (
     M_alu16_a = M_a_q;
     M_alu16_b = M_b_q;
     M_alu16_alufn = io_dip[16+0+6-:7];
+    if (io_dip[16+7+0-:1] == 1'h1) begin
+      M_alu16_e = 1'h1;
+    end else begin
+      M_alu16_e = 1'h0;
+    end
     M_tester_io_button = io_button;
+    M_tester_io_dip = io_dip;
     io_seg = ~M_seg_seg;
     io_sel = ~M_seg_sel;
     io_led = 24'h000000;

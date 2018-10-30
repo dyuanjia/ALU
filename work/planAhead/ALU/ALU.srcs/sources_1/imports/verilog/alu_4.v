@@ -8,6 +8,7 @@ module alu_4 (
     input [6:0] alufn,
     input [15:0] a,
     input [15:0] b,
+    input e,
     output reg [15:0] out,
     output reg z,
     output reg v,
@@ -108,22 +109,22 @@ module alu_4 (
     
     case (alufn[4+2-:3])
       3'h0: begin
-        out = M_adder16_out;
+        out = M_adder16_out + e;
       end
       3'h1: begin
-        out = M_boolean16_out;
+        out = M_boolean16_out + e;
       end
       3'h2: begin
-        out = M_shifter16_out;
+        out = M_shifter16_out + e;
       end
       3'h3: begin
-        out = M_compare16_out;
+        out = M_compare16_out + e;
       end
       3'h4: begin
-        out = M_multiply16_out;
+        out = M_multiply16_out + e;
       end
       3'h6: begin
-        out = M_divide16_out;
+        out = M_divide16_out + e;
       end
     endcase
   end

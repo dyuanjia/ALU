@@ -2,6 +2,7 @@ module alu (
     input alufn[7],  // ALU Function Input
     input a[16],
     input b[16],
+    input e,         // error toggle
     output out[16],  // 16-bit output
     output z,
     output v,
@@ -49,22 +50,22 @@ module alu (
     
     case(alufn[6:4]){
       b000:
-        out = adder16.out;
+        out = adder16.out + e; // e default 0, when input as 1, will force error
         
       b001:
-        out = boolean16.out;
+        out = boolean16.out + e;
       
       b010:
-        out = shifter16.out;
+        out = shifter16.out + e;
         
       b011:
-        out = compare16.out;
+        out = compare16.out + e;
         
       b100:
-        out = multiply16.out;
+        out = multiply16.out + e;
         
       b110:
-        out = divide16.out;
+        out = divide16.out + e;
 
     }
   }

@@ -1,17 +1,17 @@
 Release 14.7 Drc P.20131013 (nt)
 Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
 
-Wed Oct 31 00:40:49 2018
+Wed Oct 31 02:56:19 2018
 
 drc -z mojo_top_0_routed.ncd mojo_top_0.pcf
 
 WARNING:PhysDesignRules:372 - Gated clock. Clock net
-   tester/alu16/compare16/alufn[2]_PWR_11_o_Mux_5_o is sourced by a
-   combinatorial pin. This is not good design practice. Use the CE pin to
-   control the loading of data into the flip-flop.
-WARNING:PhysDesignRules:372 - Gated clock. Clock net
    alu16/compare16/alufn[2]_PWR_11_o_Mux_5_o is sourced by a combinatorial pin.
    This is not good design practice. Use the CE pin to control the loading of
    data into the flip-flop.
+WARNING:PhysDesignRules:372 - Gated clock. Clock net
+   tester/alu16/compare16/alufn[2]_PWR_11_o_Mux_5_o is sourced by a
+   combinatorial pin. This is not good design practice. Use the CE pin to
+   control the loading of data into the flip-flop.
 DRC detected 0 errors and 2 warnings.  Please see the previously displayed
 individual error or warning messages for more details.

@@ -13,6 +13,10 @@ module divide_14 (
   
   
   always @* begin
-    out = a / b;
+    if (b == 1'h0) begin
+      out = 58'h23c61b3b32571c7;
+    end else begin
+      out = a / b;
+    end
   end
 endmodule

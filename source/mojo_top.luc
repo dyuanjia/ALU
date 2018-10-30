@@ -49,7 +49,14 @@ module mojo_top (
     alu16.b = b.q;
     alu16.alufn = io_dip[2][6:0];
     
+    if(io_dip[2][7]==1){
+      alu16.e = 1;
+    } else {
+      alu16.e = 0;
+    }
+    
     tester.io_button = io_button;  //connect button
+    tester.io_dip = io_dip;
     
     io_seg = ~seg.seg;             // connect segments to the driver
     io_sel = ~seg.sel; 
