@@ -1,7 +1,7 @@
 module display (
     input clk,         // clock
     input rst,         // reset
-    input chars[4][4], // characters to show
+    input chars[4][5], // characters to show
     output seg[7],     // segments on the display
     output sel[4]      // character position select
   ) {

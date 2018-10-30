@@ -2,27 +2,28 @@ module fsm_tester (
     input clk,  // clock
     input rst,  // reset
     output io_led [3][8],   // LEDs on IO Shield
-    //output io_seg [8],      // 7-segment LEDs on IO Shield
-    //output io_sel [4],      // Digit select on IO Shield
-    input alufn[7],
-    input a [16],
-    input b [16],
-    output out [16]
+    output io_seg [8],      // 7-segment LEDs on IO Shield
+    output io_sel [4],      // Digit select on IO Shield
+    input io_button [5],    // 5 buttons on IO Shield
+    output out [16],
+    output v,
+    output n,
+    output z
+    
   ) {
   
   const DIV = 26;           // regulates the speed in which the inputs are generated
   sig inputa[16];
   sig inputb[16];
   sig aluout[16];
-  sig alufntest[7];
-  sig v;
+  //sig alufntest[7];
   
   .clk(clk) {
     .rst(rst) {
-      fsm test_modules = {START, ADD, SUB, AND,NAND, OR,NOR, XOR,XNOR, A, B, SHL, SHR, SRA, CMPEQ_TRUE, CMPEQ_FALSE,CMPLT_TRUE, CMPLT_FALSE, CMPLE_TRUE, CMPLE_FALSE, MUL, DIVIDE, DONE}; // instance of a finite state machine
-      dff module_change[2+DIV];                     // use a flip flop as a counter for different inputs
+      fsm test_modules = {START, ADD,ADD2,ADD3,ADD4,SUB,SUB2,SUB3,SUB4,SUB5,AND,NAND, OR,NOR, XOR,XNOR, A, B, SHL, SHR, SRA, CMPEQ_TRUE, CMPEQ_FALSE,CMPLT_TRUE, CMPLT_FALSE, CMPLE_TRUE, CMPLE_FALSE, MUL, DIVIDE, DONE}; // instance of a finite state machine
+      dff module_change[1+DIV];                     // use a flip flop as a counter for different inputs
       dff case_change[DIV];                    // buffer between change in input and error checking
-      //display seg;                        // instance used to display error message
+      display seg;                        // instance used to display error message
     }
   }
   
@@ -30,73 +31,194 @@ module fsm_tester (
   
   always {
     io_led = 3x{{8h00}};     // turn LEDs off
-    //io_seg = ~seg.seg;       // connect segments to the driver
-    //io_sel = ~seg.sel;       // connect select to the driver
+    io_seg = ~seg.seg;       // connect segments to the driver
+    io_sel = ~seg.sel;       // connect select to the driver
     // increment buffer counter
-    alu16.alufn = alufn;
+    alu16.alufn = 7b0;
     alu16.a = 16b0;
     alu16.b = 16b0;
     // initialize variables
-    //seg.chars = {4h0, 4h0, 4h0, 4h0};
+    seg.chars = {5h0, 5h0, 5h0, 5h0};
     out = 16b0;
+  
     
     module_change.d = module_change.q + 1;
     case_change.d = case_change.q + 1;
     
     v = alu16.v;
+    n = alu16.n;
+    z = alu16.z;
         
     case (test_modules.q) {
       test_modules.START:     //Initialize
         module_change.d = 1;
         case_change.d = 1;
-        test_modules.d=test_modules.ADD;
+        if(io_button[3]==1)
+          test_modules.d=test_modules.ADD;
+        
       test_modules.ADD:     // testing adder module
+        seg.chars = {5h2, 5h8, 5h8, 5h0};
         alu16.alufn=7b0;
-        if(module_change.q[27]==0){
-          inputa=16b11;
-          alu16.a = inputa;
-          inputb=16b11000;
-          alu16.b= inputb;
-          out[7:0]= alu16.out[7:0];
-          out[15:8] = alu16.out[15:8];
-        } else if(module_change.q[27]==1){
-          inputa=16b0111111111111111;
-          alu16.a = inputa;
-          inputb=16b1;
-          alu16.b= inputb;
-          out[7:0]= alu16.out[7:0];
-          out[15:8] = alu16.out[15:8];
+        inputa=16b11;
+        alu16.a = inputa;
+        inputb=16b11000;
+        alu16.b= inputb;
+        out[7:0]= alu16.out[7:0];
+        out[15:8] = alu16.out[15:8];
+        v = alu16.v;
+        n = alu16.n;
+        z = alu16.z;
+        //if(v==1){
+        //error
+        //}
+        if(module_change.q==0){
+            test_modules.d = test_modules.ADD2;
         }
         
+      test_modules.ADD2:     // testing adder module
+        seg.chars = {5h2, 5h8, 5h8, 5h0};
+        alu16.alufn=7b0;
+        inputa=16b1;
+        alu16.a = inputa;
+        inputb=16b1111111111111111;
+        alu16.b= inputb;
+        out[7:0]= alu16.out[7:0];
+        out[15:8] = alu16.out[15:8];
+        v = alu16.v;
+        n = alu16.n;
+        z = alu16.z; // z should show
+        //if(v==1){
+        //error
+        //}
+        if(module_change.q==0){
+            test_modules.d = test_modules.ADD3;
+        }
+        
+      test_modules.ADD3:     // testing adder module
+        seg.chars = {5h2, 5h8, 5h8, 5h0};
+        alu16.alufn=7b0;
+        inputa=16b1111111111111111;
+        alu16.a = inputa;
+        inputb=16b1111111111111111;
+        alu16.b= inputb;
+        out[7:0]= alu16.out[7:0];
+        out[15:8] = alu16.out[15:8];
+        v = alu16.v;
+        n = alu16.n; // n should show
+        z = alu16.z; 
+        //if(v==1){
+        //error
+        //}
+        if(module_change.q==0){
+            test_modules.d = test_modules.ADD4;
+        }
+        
+      test_modules.ADD4:     // testing adder module
+        seg.chars = {5h2, 5h8, 5h8, 5h0};
+        alu16.alufn=7b0;
+        inputa=16b1000000000000000;
+        alu16.a = inputa;
+        inputb=16b1000000000000000;
+        alu16.b= inputb;
+        out[7:0]= alu16.out[7:0];
+        out[15:8] = alu16.out[15:8];
+        v = alu16.v; //v should show since overflow
+        n = alu16.n;
+        z = alu16.z;
         //if(v==1){
         //error
         //}
         if(module_change.q==0){
             test_modules.d = test_modules.SUB;
         }
+        
       test_modules.SUB:
+      //show positive - positive
+        seg.chars = {5hC, 5hB, 5hA, 5h0};
         alu16.alufn=7b1;
-        if(module_change.q[27]==0){
-          inputa=16b11011;
-          alu16.a = inputa;
-          inputb=16b11;
-          alu16.b= inputb;
-          out[7:0]= alu16.out[7:0];
-          out[15:8] = alu16.out[15:8];
-        } else if(module_change.q[27]==1){
-          inputa=16b1000000000000000;
-          alu16.a = inputa;
-          inputb=16b1;
-          alu16.b= inputb;
-          out[7:0]= alu16.out[7:0];
-          out[15:8] = alu16.out[15:8];
+        inputa=16b11011;
+        alu16.a = inputa;
+        inputb=16b11;
+        alu16.b= inputb;
+        out[7:0]= alu16.out[7:0];
+        out[15:8] = alu16.out[15:8];
+        v = alu16.v; 
+        n = alu16.n;
+        z = alu16.z;
+        if(module_change.q==0){
+            test_modules.d = test_modules.SUB2;
         }
+        
+      test_modules.SUB2:
+      //show positive - neg
+        seg.chars = {5hC, 5hB, 5hA, 5h0};
+        alu16.alufn=7b1;
+        inputa=16b11011;
+        alu16.a = inputa;
+        inputb=16b1111111111111111;
+        alu16.b= inputb;
+        out[7:0]= alu16.out[7:0];
+        out[15:8] = alu16.out[15:8];
+        v = alu16.v; 
+        n = alu16.n;
+        z = alu16.z;
+        if(module_change.q==0){
+            test_modules.d = test_modules.SUB3;
+        }
+        
+      test_modules.SUB3:
+      //show 2 negative numbers sub
+        seg.chars = {5hC, 5hB, 5hA, 5h0};
+        alu16.alufn=7b1;
+        inputa=16b1000000000000000;
+        alu16.a = inputa;
+        inputb=16b1111111111111111;
+        alu16.b= inputb;
+        out[7:0]= alu16.out[7:0];
+        out[15:8] = alu16.out[15:8];
+        v = alu16.v; 
+        n = alu16.n; //n should show
+        z = alu16.z; 
+        if(module_change.q==0){
+            test_modules.d = test_modules.SUB4;
+        }
+        
+      test_modules.SUB4:
+        seg.chars = {5hC, 5hB, 5hA, 5h0};
+        alu16.alufn=7b1;
+        inputa=16b1000000000000000;
+        alu16.a = inputa;
+        inputb=16b0100000000000000;
+        alu16.b= inputb;
+        out[7:0]= alu16.out[7:0];
+        out[15:8] = alu16.out[15:8];
+        v = alu16.v; //v should show overflow
+        n = alu16.n;
+        z = alu16.z;
+        if(module_change.q==0){
+            test_modules.d = test_modules.SUB5;
+        }
+        
+      test_modules.SUB5:
+      //show Z
+        seg.chars = {5hC, 5hB, 5hA, 5h0};
+        alu16.alufn=7b1;
+        inputa=16b1111111111111111;
+        alu16.a = inputa;
+        inputb=16b1111111111111111;
+        alu16.b= inputb;
+        out[7:0]= alu16.out[7:0];
+        out[15:8] = alu16.out[15:8];
+        v = alu16.v; 
+        n = alu16.n;
+        z = alu16.z; //z should show
         if(module_change.q==0){
             test_modules.d = test_modules.AND;
         }
         // A is 0000111100001111, B is 0000000011111111. One 4 bit in the 16 bit represents one test case in the truth table for bool func
       //Yet to add else for error handling
       test_modules.AND:
+        seg.chars = {5h2, 5h7, 5h8, 5h0};
       //alufn == 7b0011000 to activate AND
         alu16.alufn=7b0011000;
         inputa=16b0000111100001111;
@@ -110,6 +232,7 @@ module fsm_tester (
         }
       test_modules.OR:
         //alufn[3:0] == 7b0011110 to activate OR
+        seg.chars = {5h5, 5h6, 5h0, 5h0};
         alu16.alufn=7b0011110;
         inputa=16b0000111100001111;
         alu16.a = inputa;
@@ -123,6 +246,7 @@ module fsm_tester (
         
       test_modules.XOR:
         //alufn[3:0] == 7b0010110 to activate XOR
+        seg.chars = {5h9, 5h5, 5h6, 5h0};
         alu16.alufn=7b0010110;
         inputa=16b0000111100001111;
         alu16.a = inputa;
@@ -135,6 +259,7 @@ module fsm_tester (
         }
       test_modules.A:
         //alufn[3:0] == 7b0011010 to activate 'A'
+        seg.chars = {5h2, 5h0, 5h0, 5h0};
         alu16.alufn=7b0011010;
         inputa= 16b0000111100001111;
         alu16.a = inputa;
@@ -147,6 +272,7 @@ module fsm_tester (
         }
       test_modules.NAND:
       //alufn[3:0] == 7b0010111 to activate NAND
+        seg.chars = {5h7, 5h2, 5h7, 5h8};
         alu16.alufn = 7b0010111;
         inputa = 16b0000111100001111;
         alu16.a = inputa;
@@ -158,7 +284,8 @@ module fsm_tester (
           test_modules.d = test_modules.NOR;
         }
       test_modules.NOR:
-      //alufn[3:0] == 7b0010001 to activate NOR 
+      //alufn[3:0] == 7b0010001 to activate NOR
+        seg.chars = {5h7, 5h5, 5h6, 5h0}; 
         alu16.alufn = 7b0010001;
         inputa = 16b0000111100001111;
         alu16.a = inputa;
@@ -171,6 +298,7 @@ module fsm_tester (
         }
       test_modules.XNOR:
       //alufn[3:0] == 7b0011001 to activate XNOR
+        seg.chars = {5h9, 5h7, 5h5, 5h6};
         alu16.alufn = 7b0011001;
         inputa = 16b0000111100001111;
         alu16.a = inputa;
@@ -182,7 +310,8 @@ module fsm_tester (
           test_modules.d = test_modules.B;
         }
       test_modules.B:
-      //alufn[3:0] == 7b0010101 to activate B 
+      //alufn[3:0] == 7b0010101 to activate B
+        seg.chars = {5hA, 5h0, 5h0, 5h0}; 
         alu16.alufn = 7b0010101;
         inputa = 16b0000111100001111;
         alu16.a = inputa;
@@ -196,6 +325,7 @@ module fsm_tester (
         
        test_modules.CMPEQ_TRUE:
       //alufn[3:0] == 7b0110011 to activate B 
+        seg.chars = {5hE, 5hF, 5h10, 5h0};
         alu16.alufn = 7b0110011;
         inputa = 16b1010101010101010;
         alu16.a = inputa;
@@ -208,6 +338,7 @@ module fsm_tester (
         }
         
        test_modules.CMPEQ_FALSE:
+        seg.chars = {5hE, 5hF, 5h10, 5h0};
       //alufn[3:0] == 7b0110011 to activate B 
         alu16.alufn = 7b0110011;
         inputa = 16b1010101010101010;
@@ -221,6 +352,7 @@ module fsm_tester (
         }
         
        test_modules.CMPLT_TRUE:
+        seg.chars = {5hE, 5hF, 5h4, 5h0};
       //alufn[3:0] == 7b0110101 to activate B 
         alu16.alufn = 7b0110101;
         inputa = 16b0000000000000111;
@@ -234,6 +366,7 @@ module fsm_tester (
         }
         
        test_modules.CMPLT_FALSE:
+        seg.chars = {5hE, 5hF, 5h4, 5h0};
       //alufn[3:0] == 7b0110101 to activate B 
         alu16.alufn = 7b0110101;
         inputa = 16b0111000000000000;
@@ -247,6 +380,7 @@ module fsm_tester (
         }
         
        test_modules.CMPLE_TRUE:
+        seg.chars = {5hE, 5hF, 5h4, 5h10};
       //alufn[3:0] == 7b0110111 to activate B 
         alu16.alufn = 7b0110111;
         inputa = 16b0000000000000111;
@@ -260,6 +394,7 @@ module fsm_tester (
         }
        
        test_modules.CMPLE_FALSE:
+        seg.chars = {5hE, 5hF, 5h4, 5h10};
       //alufn[3:0] == 7b0110111 to activate B 
         alu16.alufn = 7b0110111;
         inputa = 16b0111000000000000;
@@ -273,6 +408,7 @@ module fsm_tester (
         }
        
        test_modules.SHL:
+        seg.chars = {5hC, 5h9, 5h4, 5h0};
       //alufn[3:0] == 7b0100000 to activate B 
         alu16.alufn = 7b0100000;
         inputa = 16b1011011101110011;
@@ -286,6 +422,7 @@ module fsm_tester (
         }
         
       test_modules.SHR:
+        seg.chars = {5hC, 5h9, 5h6, 5h0};
       //alufn[3:0] == 7b0100001 to activate B 
         alu16.alufn = 7b0100001;
         inputa = 16b1011011101110011;
@@ -299,6 +436,7 @@ module fsm_tester (
         }
         
       test_modules.SRA:
+        seg.chars = {5hC, 5h6, 5h2, 5h0};
       //alufn[3:0] == 7b0100011 to activate B 
         alu16.alufn = 7b0100011;
         inputa = 16b1011011101110011;
@@ -308,18 +446,29 @@ module fsm_tester (
         out[7:0] = alu16.out[7:0];
         out[15:8] = alu16.out[15:8];
 
-        
+        if(module_change.q==0){
+          test_modules.d = test_modules.MUL;
+        }
        
-
-        
-        
-            
-        
       test_modules.MUL:     // testing multiply module
         // TODO
+        seg.chars = {5h7, 5h11, 5hB, 5h4}; 
+
         out = 16b0;
+        if(module_change.q==0){
+          test_modules.d = test_modules.DIVIDE;
+        }
         
       test_modules.DIVIDE:     // testing divide module
+        seg.chars = {5h8, 5h3, 5hB, 5h0};
+        // TODO
+        out = 16b0;
+        if(module_change.q==0){
+          test_modules.d = test_modules.DONE;
+        }
+        
+      test_modules.DONE:
+        seg.chars = {5h8, 5h5, 5h7, 5h10};
         // TODO
         out = 16b0;
     }

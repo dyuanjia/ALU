@@ -22,9 +22,7 @@ module mojo_top_0 (
     output reg [3:0] io_sel,
     input [4:0] io_button,
     input [23:0] io_dip,
-    input [6:0] alufn,
-    input [15:0] a,
-    input [15:0] b
+    input [6:0] alufn
   );
   
   
@@ -38,23 +36,43 @@ module mojo_top_0 (
     .in(M_reset_cond_in),
     .out(M_reset_cond_out)
   );
-  localparam AUTO_modes = 1'd0;
-  localparam MANUAL_modes = 1'd1;
+  localparam A_modes = 2'd0;
+  localparam B_modes = 2'd1;
+  localparam EQ_modes = 2'd2;
+  localparam AUTO_modes = 2'd3;
   
-  reg M_modes_d, M_modes_q = AUTO_modes;
+  reg [1:0] M_modes_d, M_modes_q = A_modes;
   wire [24-1:0] M_tester_io_led;
+  wire [8-1:0] M_tester_io_seg;
+  wire [4-1:0] M_tester_io_sel;
   wire [16-1:0] M_tester_out;
-  reg [7-1:0] M_tester_alufn;
-  reg [16-1:0] M_tester_a;
-  reg [16-1:0] M_tester_b;
+  wire [1-1:0] M_tester_v;
+  wire [1-1:0] M_tester_n;
+  wire [1-1:0] M_tester_z;
+  reg [5-1:0] M_tester_io_button;
   fsm_tester_2 tester (
     .clk(clk),
     .rst(rst),
-    .alufn(M_tester_alufn),
-    .a(M_tester_a),
-    .b(M_tester_b),
+    .io_button(M_tester_io_button),
     .io_led(M_tester_io_led),
-    .out(M_tester_out)
+    .io_seg(M_tester_io_seg),
+    .io_sel(M_tester_io_sel),
+    .out(M_tester_out),
+    .v(M_tester_v),
+    .n(M_tester_n),
+    .z(M_tester_z)
+  );
+  reg [15:0] M_a_d, M_a_q = 1'h0;
+  reg [15:0] M_b_d, M_b_q = 1'h0;
+  wire [7-1:0] M_seg_seg;
+  wire [4-1:0] M_seg_sel;
+  reg [20-1:0] M_seg_chars;
+  display_3 seg (
+    .clk(clk),
+    .rst(rst),
+    .chars(M_seg_chars),
+    .seg(M_seg_seg),
+    .sel(M_seg_sel)
   );
   
   wire [16-1:0] M_alu16_out;
@@ -64,7 +82,7 @@ module mojo_top_0 (
   reg [7-1:0] M_alu16_alufn;
   reg [16-1:0] M_alu16_a;
   reg [16-1:0] M_alu16_b;
-  alu_3 alu16 (
+  alu_4 alu16 (
     .alufn(M_alu16_alufn),
     .a(M_alu16_a),
     .b(M_alu16_b),
@@ -75,46 +93,85 @@ module mojo_top_0 (
   );
   
   always @* begin
+    M_modes_d = M_modes_q;
+    M_b_d = M_b_q;
+    M_a_d = M_a_q;
+    
     M_reset_cond_in = ~rst_n;
     rst = M_reset_cond_out;
-    M_tester_alufn = alufn;
-    M_tester_a = a;
-    M_tester_b = b;
-    M_alu16_alufn = alufn;
-    M_alu16_a = a;
-    M_alu16_b = b;
+    M_seg_chars = 20'h00000;
+    M_alu16_alufn = 7'h00;
+    M_alu16_a = M_a_q;
+    M_alu16_b = M_b_q;
+    M_alu16_alufn = io_dip[16+0+6-:7];
+    M_tester_io_button = io_button;
+    io_seg = ~M_seg_seg;
+    io_sel = ~M_seg_sel;
     io_led = 24'h000000;
     
     case (M_modes_q)
-      MANUAL_modes: begin
-        M_alu16_alufn = io_dip[16+0+6-:7];
-        M_alu16_a = 16'h0003;
-        M_alu16_b[8+7-:8] = io_dip[8+7-:8];
-        M_alu16_b[0+7-:8] = io_dip[0+7-:8];
+      A_modes: begin
+        M_seg_chars = 20'h10000;
+        M_a_d[8+7-:8] = io_dip[8+7-:8];
+        M_a_d[0+7-:8] = io_dip[0+7-:8];
+        io_led[0+7-:8] = io_dip[0+7-:8];
+        io_led[8+7-:8] = io_dip[8+7-:8];
+        if (io_button[2+0-:1] == 1'h1) begin
+          M_modes_d = AUTO_modes;
+        end
+        if (io_button[0+0-:1] == 1'h1) begin
+          M_modes_d = B_modes;
+        end
+      end
+      B_modes: begin
+        M_seg_chars = 20'h50000;
+        M_b_d[8+7-:8] = io_dip[8+7-:8];
+        M_b_d[0+7-:8] = io_dip[0+7-:8];
+        io_led[0+7-:8] = io_dip[0+7-:8];
+        io_led[8+7-:8] = io_dip[8+7-:8];
+        if (io_button[2+0-:1] == 1'h1) begin
+          M_modes_d = AUTO_modes;
+        end
+        if (io_button[1+0-:1] == 1'h1) begin
+          M_modes_d = EQ_modes;
+        end
+      end
+      EQ_modes: begin
         io_led[0+7-:8] = M_alu16_out[0+7-:8];
         io_led[8+7-:8] = M_alu16_out[8+7-:8];
         io_led[16+3+4-:5] = 5'h00;
         io_led[16+2+0-:1] = M_alu16_z;
         io_led[16+1+0-:1] = M_alu16_v;
         io_led[16+0+0-:1] = M_alu16_n;
+        if (io_button[2+0-:1] == 1'h1) begin
+          M_modes_d = AUTO_modes;
+        end
       end
       AUTO_modes: begin
         io_led[0+7-:8] = M_tester_out[0+7-:8];
         io_led[8+7-:8] = M_tester_out[8+7-:8];
+        io_led[16+3+4-:5] = 5'h00;
+        io_led[16+2+0-:1] = M_tester_z;
+        io_led[16+1+0-:1] = M_tester_v;
+        io_led[16+0+0-:1] = M_tester_n;
+        io_seg = M_tester_io_seg;
+        io_sel = M_tester_io_sel;
       end
     endcase
     led = 8'h00;
     spi_miso = 1'bz;
     spi_channel = 4'bzzzz;
     avr_rx = 1'bz;
-    io_seg = 8'hff;
-    io_sel = 4'hf;
   end
   
   always @(posedge clk) begin
     if (rst == 1'b1) begin
+      M_a_q <= 1'h0;
+      M_b_q <= 1'h0;
       M_modes_q <= 1'h0;
     end else begin
+      M_a_q <= M_a_d;
+      M_b_q <= M_b_d;
       M_modes_q <= M_modes_d;
     end
   end
