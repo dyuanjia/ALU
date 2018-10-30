@@ -24,9 +24,9 @@ module fsm_tester (
       fsm test_modules = {START, ADD,ADD2,ADD3,ADD4,SUB,SUB2,SUB3,SUB4,SUB5,AND,NAND, OR,NOR, XOR,XNOR, A, B, 
                           SHL, SHR, SRA, CMPEQ_TRUE, CMPEQ_FALSE,CMPLT_TRUE, CMPLT_FALSE, CMPLE_TRUE, CMPLE_FALSE, 
                           MUL, DIVIDE, ERROR, DONE}; // instance of a finite state machine
-      dff module_change[1+DIV];                     // use a flip flop as a counter for different inputs
+      dff module_change[1+DIV];                     // use a flip flop as a counter for different modules
       dff next_state[5];
-      display seg;                        // instance used to display error message
+      display seg;                        // instance used to display messages
     }
   }
   
@@ -44,7 +44,7 @@ module fsm_tester (
     seg.chars = {5h0, 5h0, 5h0, 5h0};
     out = 16b0;
     
-    if(io_dip[2][7]==1){
+    if(io_dip[2][7]==1){ // when equals to 1, error will be introduced
       alu16.e = 1;
     } else {
       alu16.e = 0;

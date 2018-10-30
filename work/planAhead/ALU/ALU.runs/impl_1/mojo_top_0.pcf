@@ -1,5 +1,5 @@
 //! **************************************************************************
-// Written by: Map P.20131013 on Wed Oct 31 02:55:41 2018
+// Written by: Map P.20131013 on Wed Oct 31 03:01:11 2018
 //! **************************************************************************
 
 SCHEMATIC START;
@@ -121,7 +121,6 @@ TIMEGRP clk = BEL "M_b_q_0" BEL "M_b_q_1" BEL "M_b_q_2" BEL "M_b_q_3" BEL
         "tester/M_test_modules_q_FSM_FFd2_1" BEL
         "tester/M_test_modules_q_FSM_FFd2_2" BEL
         "tester/M_test_modules_q_FSM_FFd3_1" BEL
-        "tester/M_test_modules_q_FSM_FFd3_2" BEL
         "tester/M_test_modules_q_FSM_FFd4_1" BEL
         "tester/M_test_modules_q_FSM_FFd4_2" BEL
         "tester/M_test_modules_q_FSM_FFd5_1" BEL

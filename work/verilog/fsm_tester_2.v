@@ -584,9 +584,6 @@ module fsm_tester_2 (
         M_alu16_b = inputb;
         out[0+7-:8] = M_alu16_out[0+7-:8];
         out[8+7-:8] = M_alu16_out[8+7-:8];
-        if (M_module_change_q[26+0-:1] == 1'h1 && M_alu16_out != ($signed(inputa) >>> inputb[0+3-:4])) begin
-          M_test_modules_d = ERROR_test_modules;
-        end
         if (M_module_change_q == 1'h0) begin
           M_test_modules_d = MUL_test_modules;
         end
