@@ -53,17 +53,17 @@ module fsm_tester (
       test_modules.START:     //Initialize
         module_change.d = 1;
         case_change.d = 1;
-        if(io_button[3]==1)
+        if(io_button[3]==1)  //Go to adder state
           test_modules.d=test_modules.ADD;
         
-      test_modules.ADD:     // testing adder module
-        seg.chars = {5h2, 5h8, 5h8, 5h0};
-        alu16.alufn=7b0;
-        inputa=16b11;
+      test_modules.ADD:     //positive + positive,  testing adder module
+        seg.chars = {5h2, 5h8, 5h8, 5h0}; //Display add
+        alu16.alufn=7b0;    //select adder unit
+        inputa=16b11;       //a=3
         alu16.a = inputa;
-        inputb=16b11000;
+        inputb=16b11000;    //b=24
         alu16.b= inputb;
-        out[7:0]= alu16.out[7:0];
+        out[7:0]= alu16.out[7:0];  //outputs for adder
         out[15:8] = alu16.out[15:8];
         v = alu16.v;
         n = alu16.n;
@@ -75,18 +75,18 @@ module fsm_tester (
             test_modules.d = test_modules.ADD2;
         }
         
-      test_modules.ADD2:     // testing adder module
-        seg.chars = {5h2, 5h8, 5h8, 5h0};
+      test_modules.ADD2:     // positive + negative
+        seg.chars = {5h2, 5h8, 5h8, 5h0}; //display add
         alu16.alufn=7b0;
-        inputa=16b1;
+        inputa=16b1;                // a=1
         alu16.a = inputa;
-        inputb=16b1111111111111111;
+        inputb=16b1111111111111111; //b=-1
         alu16.b= inputb;
         out[7:0]= alu16.out[7:0];
         out[15:8] = alu16.out[15:8];
         v = alu16.v;
         n = alu16.n;
-        z = alu16.z; // z should show
+        z = alu16.z;    // z should show
         //if(v==1){
         //error
         //}
@@ -94,12 +94,12 @@ module fsm_tester (
             test_modules.d = test_modules.ADD3;
         }
         
-      test_modules.ADD3:     // testing adder module
+      test_modules.ADD3:     // negative + negative
         seg.chars = {5h2, 5h8, 5h8, 5h0};
         alu16.alufn=7b0;
-        inputa=16b1111111111111111;
+        inputa=16b1111111111111111; //a=-1
         alu16.a = inputa;
-        inputb=16b1111111111111111;
+        inputb=16b1111111111111111; //b=-1
         alu16.b= inputb;
         out[7:0]= alu16.out[7:0];
         out[15:8] = alu16.out[15:8];
@@ -113,12 +113,12 @@ module fsm_tester (
             test_modules.d = test_modules.ADD4;
         }
         
-      test_modules.ADD4:     // testing adder module
+      test_modules.ADD4:     // negative + negative overflows
         seg.chars = {5h2, 5h8, 5h8, 5h0};
         alu16.alufn=7b0;
-        inputa=16b1000000000000000;
+        inputa=16b1000000000000000;  //a=-32768
         alu16.a = inputa;
-        inputb=16b1000000000000000;
+        inputb=16b1000000000000000; //b=-32768
         alu16.b= inputb;
         out[7:0]= alu16.out[7:0];
         out[15:8] = alu16.out[15:8];
@@ -134,11 +134,11 @@ module fsm_tester (
         
       test_modules.SUB:
       //show positive - positive
-        seg.chars = {5hC, 5hB, 5hA, 5h0};
+        seg.chars = {5hC, 5hB, 5hA, 5h0};  //display sub
         alu16.alufn=7b1;
-        inputa=16b11011;
-        alu16.a = inputa;
-        inputb=16b11;
+        inputa=16b11011; //a=27
+        alu16.a = inputa; 
+        inputb=16b11;  //b=3
         alu16.b= inputb;
         out[7:0]= alu16.out[7:0];
         out[15:8] = alu16.out[15:8];
@@ -153,9 +153,9 @@ module fsm_tester (
       //show positive - neg
         seg.chars = {5hC, 5hB, 5hA, 5h0};
         alu16.alufn=7b1;
-        inputa=16b11011;
+        inputa=16b11011;  //a=27
         alu16.a = inputa;
-        inputb=16b1111111111111111;
+        inputb=16b1111111111111111; //b=-1
         alu16.b= inputb;
         out[7:0]= alu16.out[7:0];
         out[15:8] = alu16.out[15:8];
@@ -170,25 +170,25 @@ module fsm_tester (
       //show 2 negative numbers sub
         seg.chars = {5hC, 5hB, 5hA, 5h0};
         alu16.alufn=7b1;
-        inputa=16b1000000000000000;
+        inputa=16b1000000000000000;  //a=-32768
         alu16.a = inputa;
-        inputb=16b1111111111111111;
+        inputb=16b1111111111111111;  //b=-1
         alu16.b= inputb;
         out[7:0]= alu16.out[7:0];
         out[15:8] = alu16.out[15:8];
         v = alu16.v; 
-        n = alu16.n; //n should show
+        n = alu16.n; //n should show because negative
         z = alu16.z; 
         if(module_change.q==0){
             test_modules.d = test_modules.SUB4;
         }
         
-      test_modules.SUB4:
+      test_modules.SUB4: //negative - positive
         seg.chars = {5hC, 5hB, 5hA, 5h0};
         alu16.alufn=7b1;
-        inputa=16b1000000000000000;
+        inputa=16b1000000000000000;  //a=-32768 
         alu16.a = inputa;
-        inputb=16b0100000000000000;
+        inputb=16b0100000000000000;  //b=16384
         alu16.b= inputb;
         out[7:0]= alu16.out[7:0];
         out[15:8] = alu16.out[15:8];
@@ -199,13 +199,13 @@ module fsm_tester (
             test_modules.d = test_modules.SUB5;
         }
         
-      test_modules.SUB5:
+      test_modules.SUB5: //negative - negative
       //show Z
         seg.chars = {5hC, 5hB, 5hA, 5h0};
         alu16.alufn=7b1;
-        inputa=16b1111111111111111;
+        inputa=16b1111111111111111;  //a=-1
         alu16.a = inputa;
-        inputb=16b1111111111111111;
+        inputb=16b1111111111111111;  //b=-1
         alu16.b= inputb;
         out[7:0]= alu16.out[7:0];
         out[15:8] = alu16.out[15:8];
@@ -323,7 +323,7 @@ module fsm_tester (
           test_modules.d = test_modules.CMPEQ_TRUE;
         }
         
-       test_modules.CMPEQ_TRUE:
+       test_modules.CMPEQ_TRUE: //show equality is true
       //alufn[3:0] == 7b0110011 to activate B 
         seg.chars = {5hE, 5hF, 5h10, 5h0};
         alu16.alufn = 7b0110011;
@@ -337,7 +337,7 @@ module fsm_tester (
           test_modules.d = test_modules.CMPEQ_FALSE;
         }
         
-       test_modules.CMPEQ_FALSE:
+       test_modules.CMPEQ_FALSE:  //show equality false
         seg.chars = {5hE, 5hF, 5h10, 5h0};
       //alufn[3:0] == 7b0110011 to activate B 
         alu16.alufn = 7b0110011;
@@ -351,13 +351,13 @@ module fsm_tester (
           test_modules.d = test_modules.CMPLT_TRUE;
         }
         
-       test_modules.CMPLT_TRUE:
+       test_modules.CMPLT_TRUE:  //show a<b true
         seg.chars = {5hE, 5hF, 5h4, 5h0};
       //alufn[3:0] == 7b0110101 to activate B 
         alu16.alufn = 7b0110101;
-        inputa = 16b0000000000000111;
+        inputa = 16b0000000000000111;  //a = 7
         alu16.a = inputa;
-        inputb = 16b0111000000000000;
+        inputb = 16b0111000000000000;  //b=28672
         alu16.b = inputb;
         out[7:0] = alu16.out[7:0];
         out[15:8] = alu16.out[15:8];
@@ -365,13 +365,13 @@ module fsm_tester (
           test_modules.d = test_modules.CMPLT_FALSE;
         }
         
-       test_modules.CMPLT_FALSE:
+       test_modules.CMPLT_FALSE:  //show a<b false
         seg.chars = {5hE, 5hF, 5h4, 5h0};
       //alufn[3:0] == 7b0110101 to activate B 
         alu16.alufn = 7b0110101;
-        inputa = 16b0111000000000000;
+        inputa = 16b0111000000000000;  //a=28672
         alu16.a = inputa;
-        inputb = 16b0000000000000111;
+        inputb = 16b0000000000000111;  //b=7
         alu16.b = inputb;
         out[7:0] = alu16.out[7:0];
         out[15:8] = alu16.out[15:8];
@@ -379,13 +379,13 @@ module fsm_tester (
           test_modules.d = test_modules.CMPLE_TRUE;
         }
         
-       test_modules.CMPLE_TRUE:
+       test_modules.CMPLE_TRUE:  //show a<=b true
         seg.chars = {5hE, 5hF, 5h4, 5h10};
       //alufn[3:0] == 7b0110111 to activate B 
         alu16.alufn = 7b0110111;
-        inputa = 16b0000000000000111;
+        inputa = 16b0000000000000111; //a=7
         alu16.a = inputa;
-        inputb = 16b0111000000000000;
+        inputb = 16b0111000000000000;  //b=28672
         alu16.b = inputb;
         out[7:0] = alu16.out[7:0];
         out[15:8] = alu16.out[15:8];
@@ -393,22 +393,22 @@ module fsm_tester (
           test_modules.d = test_modules.CMPLE_FALSE;
         }
        
-       test_modules.CMPLE_FALSE:
+       test_modules.CMPLE_FALSE:   //show a<=b false
         seg.chars = {5hE, 5hF, 5h4, 5h10};
       //alufn[3:0] == 7b0110111 to activate B 
         alu16.alufn = 7b0110111;
-        inputa = 16b0111000000000000;
+        inputa = 16b0111000000000000;  //a = 28672
         alu16.a = inputa;
-        inputb = 16b0000000000000111;
+        inputb = 16b0000000000000111;  //b = 7
         alu16.b = inputb;
         out[7:0] = alu16.out[7:0];
         out[15:8] = alu16.out[15:8];
         if(module_change.q==0){
-          test_modules.d = test_modules.SHL;
+          test_modules.d = test_modules.SHL;  //Go to shift left state
         }
        
-       test_modules.SHL:
-        seg.chars = {5hC, 5h9, 5h4, 5h0};
+       test_modules.SHL:  //show shift left
+        seg.chars = {5hC, 5h9, 5h4, 5h0};  //show shl
       //alufn[3:0] == 7b0100000 to activate B 
         alu16.alufn = 7b0100000;
         inputa = 16b1011011101110011;
@@ -418,11 +418,11 @@ module fsm_tester (
         out[7:0] = alu16.out[7:0];
         out[15:8] = alu16.out[15:8];
         if(module_change.q==0){
-          test_modules.d = test_modules.SHR;
+          test_modules.d = test_modules.SHR; //Go to shift right state
         }
         
-      test_modules.SHR:
-        seg.chars = {5hC, 5h9, 5h6, 5h0};
+      test_modules.SHR: // show right shift
+        seg.chars = {5hC, 5h9, 5h6, 5h0}; //display shr
       //alufn[3:0] == 7b0100001 to activate B 
         alu16.alufn = 7b0100001;
         inputa = 16b1011011101110011;
@@ -432,11 +432,11 @@ module fsm_tester (
         out[7:0] = alu16.out[7:0];
         out[15:8] = alu16.out[15:8];
         if(module_change.q==0){
-          test_modules.d = test_modules.SRA;
+          test_modules.d = test_modules.SRA;  //Go to shift right arithmetric state
         }
         
-      test_modules.SRA:
-        seg.chars = {5hC, 5h6, 5h2, 5h0};
+      test_modules.SRA: //shift right with arithmetric
+        seg.chars = {5hC, 5h6, 5h2, 5h0}; //display SRA
       //alufn[3:0] == 7b0100011 to activate B 
         alu16.alufn = 7b0100011;
         inputa = 16b1011011101110011;
@@ -452,17 +452,27 @@ module fsm_tester (
        
       test_modules.MUL:     // testing multiply module
         // TODO
-        seg.chars = {5h7, 5h11, 5hB, 5h4}; 
-
-        out = 16b0;
+        seg.chars = {5h7, 5h11, 5hB, 5h4};
+        alu16.alufn = 7b1000000;
+        inputa = 16b0000000000001010;
+        alu16.a = inputa;
+        inputb = 16b0000000000000010;
+        alu16.b = inputb;
+        out[7:0] = alu16.out[7:0];
+        out[15:8] = alu16.out[15:8];
         if(module_change.q==0){
           test_modules.d = test_modules.DIVIDE;
         }
         
       test_modules.DIVIDE:     // testing divide module
         seg.chars = {5h8, 5h3, 5hB, 5h0};
-        // TODO
-        out = 16b0;
+        alu16.alufn = 7b1100000;
+        inputa = 16b0000000001100100;
+        alu16.a = inputa;
+        inputb = 16b0000000000001010;
+        alu16.b = inputb;
+        out[7:0] = alu16.out[7:0];
+        out[15:8] = alu16.out[15:8];
         if(module_change.q==0){
           test_modules.d = test_modules.DONE;
         }

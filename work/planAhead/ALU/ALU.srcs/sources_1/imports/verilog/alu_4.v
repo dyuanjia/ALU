@@ -122,7 +122,7 @@ module alu_4 (
       3'h4: begin
         out = M_multiply16_out;
       end
-      3'h2: begin
+      3'h6: begin
         out = M_divide16_out;
       end
     endcase

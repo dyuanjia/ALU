@@ -1,5 +1,5 @@
 //! **************************************************************************
-// Written by: Map P.20131013 on Tue Oct 30 23:45:33 2018
+// Written by: Map P.20131013 on Wed Oct 31 00:40:19 2018
 //! **************************************************************************
 
 SCHEMATIC START;
@@ -91,30 +91,32 @@ TIMEGRP clk = BEL "reset_cond/M_stage_q_3" BEL "reset_cond/M_stage_q_2" BEL
         "reset_cond/M_stage_q_1" BEL "reset_cond/M_stage_q_0" BEL "M_a_q_0"
         BEL "M_a_q_1" BEL "M_a_q_2" BEL "M_a_q_3" BEL "M_a_q_4" BEL "M_a_q_5"
         BEL "M_a_q_6" BEL "M_a_q_7" BEL "M_a_q_8" BEL "M_a_q_9" BEL
-        "tester/M_module_change_q_26" BEL "tester/M_module_change_q_25" BEL
-        "tester/M_module_change_q_24" BEL "tester/M_module_change_q_23" BEL
-        "tester/M_module_change_q_22" BEL "tester/M_module_change_q_21" BEL
-        "tester/M_module_change_q_20" BEL "tester/M_module_change_q_19" BEL
-        "tester/M_module_change_q_18" BEL "tester/M_module_change_q_17" BEL
-        "tester/M_module_change_q_16" BEL "tester/M_module_change_q_15" BEL
-        "tester/M_module_change_q_14" BEL "tester/M_module_change_q_13" BEL
-        "tester/M_module_change_q_12" BEL "tester/M_module_change_q_11" BEL
-        "tester/M_module_change_q_10" BEL "tester/M_module_change_q_9" BEL
-        "tester/M_module_change_q_8" BEL "tester/M_module_change_q_7" BEL
-        "tester/M_module_change_q_6" BEL "tester/M_module_change_q_5" BEL
-        "tester/M_module_change_q_4" BEL "tester/M_module_change_q_3" BEL
-        "tester/M_module_change_q_2" BEL "tester/M_module_change_q_1" BEL
-        "tester/M_module_change_q_0" BEL "tester/M_test_modules_q_FSM_FFd1"
-        BEL "tester/M_test_modules_q_FSM_FFd2" BEL
+        "tester/M_test_modules_q_FSM_FFd1" BEL
+        "tester/M_test_modules_q_FSM_FFd2" BEL
         "tester/M_test_modules_q_FSM_FFd3" BEL
         "tester/M_test_modules_q_FSM_FFd4" BEL
-        "tester/M_test_modules_q_FSM_FFd5" BEL
-        "tester/M_test_modules_q_FSM_FFd3_1" BEL
+        "tester/M_test_modules_q_FSM_FFd5" BEL "tester/M_module_change_q_26"
+        BEL "tester/M_module_change_q_25" BEL "tester/M_module_change_q_24"
+        BEL "tester/M_module_change_q_23" BEL "tester/M_module_change_q_22"
+        BEL "tester/M_module_change_q_21" BEL "tester/M_module_change_q_20"
+        BEL "tester/M_module_change_q_19" BEL "tester/M_module_change_q_18"
+        BEL "tester/M_module_change_q_17" BEL "tester/M_module_change_q_16"
+        BEL "tester/M_module_change_q_15" BEL "tester/M_module_change_q_14"
+        BEL "tester/M_module_change_q_13" BEL "tester/M_module_change_q_12"
+        BEL "tester/M_module_change_q_11" BEL "tester/M_module_change_q_10"
+        BEL "tester/M_module_change_q_9" BEL "tester/M_module_change_q_8" BEL
+        "tester/M_module_change_q_7" BEL "tester/M_module_change_q_6" BEL
+        "tester/M_module_change_q_5" BEL "tester/M_module_change_q_4" BEL
+        "tester/M_module_change_q_3" BEL "tester/M_module_change_q_2" BEL
+        "tester/M_module_change_q_1" BEL "tester/M_module_change_q_0" BEL
+        "tester/M_test_modules_q_FSM_FFd4_1" BEL
         "tester/M_test_modules_q_FSM_FFd1_1" BEL
         "tester/M_test_modules_q_FSM_FFd5_1" BEL
-        "tester/M_test_modules_q_FSM_FFd4_1" BEL
         "tester/M_test_modules_q_FSM_FFd2_1" BEL
+        "tester/M_test_modules_q_FSM_FFd3_1" BEL
+        "tester/M_test_modules_q_FSM_FFd4_2" BEL
         "tester/M_test_modules_q_FSM_FFd1_2" BEL
+        "tester/M_test_modules_q_FSM_FFd2_2" BEL
         "tester/M_test_modules_q_FSM_FFd3_2" BEL
         "tester/M_test_modules_q_FSM_FFd5_2" BEL "seg/M_ctr_q_0" BEL
         "seg/M_ctr_q_1" BEL "seg/M_ctr_q_2" BEL "seg/M_ctr_q_3" BEL

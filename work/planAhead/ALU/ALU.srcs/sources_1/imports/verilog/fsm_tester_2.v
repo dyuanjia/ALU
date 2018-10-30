@@ -483,14 +483,26 @@ module fsm_tester_2 (
       end
       MUL_test_modules: begin
         M_seg_chars = 20'h3c564;
-        out = 16'h0000;
+        M_alu16_alufn = 7'h40;
+        inputa = 16'h000a;
+        M_alu16_a = inputa;
+        inputb = 16'h0002;
+        M_alu16_b = inputb;
+        out[0+7-:8] = M_alu16_out[0+7-:8];
+        out[8+7-:8] = M_alu16_out[8+7-:8];
         if (M_module_change_q == 1'h0) begin
           M_test_modules_d = DIVIDE_test_modules;
         end
       end
       DIVIDE_test_modules: begin
         M_seg_chars = 20'h40d60;
-        out = 16'h0000;
+        M_alu16_alufn = 7'h60;
+        inputa = 16'h0064;
+        M_alu16_a = inputa;
+        inputb = 16'h000a;
+        M_alu16_b = inputb;
+        out[0+7-:8] = M_alu16_out[0+7-:8];
+        out[8+7-:8] = M_alu16_out[8+7-:8];
         if (M_module_change_q == 1'h0) begin
           M_test_modules_d = DONE_test_modules;
         end

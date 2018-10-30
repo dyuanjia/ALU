@@ -63,7 +63,7 @@ module alu (
       b100:
         out = multiply16.out;
         
-      b010:
+      b110:
         out = divide16.out;
 
     }

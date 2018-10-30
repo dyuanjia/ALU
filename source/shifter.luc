@@ -11,8 +11,8 @@ module shifter (
         out = a << b[3:0];
       b01:           // SHR
         out = a >> b[3:0];
-      b11:
-        out = $signed(a) >>> b[3:0];
+      b11:           // SRA
+        out = $signed(a) >>> b[3:0]; 
       default:
         out = a;    
     }
